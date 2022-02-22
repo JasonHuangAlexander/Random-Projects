@@ -1,0 +1,686 @@
+<html>
+
+<div id="div1"></div>
+<script>
+    //errors to fix:
+    //  -make blocks start the right location
+    var buttonPress = 0
+    var rightCount = 0
+    var placeCount = 0
+    var updatedList = []
+    var timerLength = 1000
+    var color
+    var rotationCounter = 0
+    var IBlock = [8, 7, 6, 5]
+    var JBlock = [19, 18, 17, 7]
+    var LBlock = [19, 18, 17, 5]
+    var OBlock = [19, 18, 7, 6]
+    var SBlock = [19, 18, 8, 7]
+    var TBlock = [19, 18, 17, 6]
+    var ZBlock = [19, 18, 6, 5]
+    var listOfBlocks = [IBlock, JBlock, LBlock, OBlock, SBlock, TBlock, ZBlock]
+    var listOfOriginalBlocks = []
+    var listOfBottomAndPlacedBlocks = [277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288]
+    var listOfLeftmostCells = [1, 13, 25, 37, 49, 61, 73, 85, 97, 109, 121, 133, 145, 157, 169, 181, 193, 205, 217, 229, 241, 253, 265, 277]
+    var listOfRightmostCells = [12, 24, 36, 48, 60, 72, 84, 96, 108, 120, 132, 144, 156, 168, 180, 192, 204, 216, 228, 240, 252, 264, 276, 288]
+    var increase = 0
+    var selectedBlock
+    var totalNumberOfCells = 0 //for giving each cell its own unique ID
+    document.body.style.backgroundColor = "E6EEFF" //set page background color
+    //make a starting screen. This screen is placed inside of tetrisTable.
+    var titleScreenStartButton = document.createElement("button")
+    titleScreenStartButton.style.backgroundColor = "CCDDFF"
+    titleScreenStartButton.style.height = "100px"
+    titleScreenStartButton.style.width = "100px"
+    titleScreenStartButton.textContent = "\n\nPlay Tetris"
+    titleScreenStartButton.onclick = function () {
+        if (buttonPress == 0) {
+            buttonPress++
+            titleScreenStartButton.textContent = "Level 1"
+            titleScreenStartButton.style.backgroundColor="lightgreen"
+            rightCount = 0
+            enterBlock()
+            loadTetrisTable()
+            moveBlockDown()
+        }
+    }
+    //tetris starting screen table
+    var titleScreenTable = document.createElement("table")
+    titleScreenTable.id = "titleScreenTable"
+    titleScreenTable.append(titleScreenStartButton)
+    div1.appendChild(titleScreenTable)
+    //tetris game table
+    var tetrisTable = document.createElement("table")
+    tetrisTable.id = "tetrisTable"
+    inputUpDownLeftRight()
+
+    //=============================================================================================
+    //
+    //
+    //-------------------------------------FUNCTIONS BELOW-----------------------------------------
+    //
+    //
+    //=============================================================================================
+    //make all the tetris blocks
+    function enterBlock() {
+        listOfOriginalBlocks = []
+        increase = 0
+        rightCount = 0
+        var x = 10 //just to make the below expression work
+        while (x > 6) {
+            var x = Math.random()
+            Math.round(x)
+            x = x.toFixed(1) * 10
+        }
+        //select color
+        if (x == 0) {
+            color = "lightblue"
+        }
+        if (x == 1) {
+            color = "blue"
+        }
+        if (x == 2) {
+            color = "orange"
+        }
+        if (x == 3) {
+            color = "yellow"
+        }
+        if (x == 4) {
+            color = "lightgreen"
+        }
+        if (x == 5) {
+            color = "violet"
+        }
+        if (x == 6) {
+            color = "red"
+        }
+        listOfOriginalBlocks = listOfBlocks[x]
+    }
+
+    function checkPlacedError() {
+        var x = 0
+        while (x < 288) {
+            x++
+            var selectedBlock = document.getElementById(x)
+            if (selectedBlock.style.backgroundColor != "gray" && selectedBlock.getAttribute("status") != "falling") {
+                selectedBlock.setAttribute("status", "placed")
+                listOfBottomAndPlacedBlocks.push(selectedBlock.id)
+            }
+        }
+    }
+
+    function moveBlockDown() {
+        var listOfOnlyBottomBlocks = [277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288]
+        for (x in listOfOnlyBottomBlocks) {
+            var selectedBlock = document.getElementById(listOfOnlyBottomBlocks[x])
+            selectedBlock.style.visibility = "hidden"
+        }
+        //make the previous block gray
+        for (x in listOfOriginalBlocks) {
+            var selectedBlock = document.getElementById(listOfOriginalBlocks[x])
+            var aboveBlock = document.getElementById(listOfOriginalBlocks[x] + increase - 12)
+            if (selectedBlock.id > 12) {
+                if (aboveBlock.style.backgroundColor != "gray" && aboveBlock.getAttribute("status") != "placed") {
+                    aboveBlock.style.backgroundColor = "gray"
+                    aboveBlock.setAttribute("status", "blank")
+                }
+            }
+        }
+        for (x in listOfOriginalBlocks) {
+            //make the previous block gray
+            if (increase - 12 > 0) {
+                var lastBlock = document.getElementById(listOfOriginalBlocks[x] + increase - 12)
+                if (lastBlock.getAttribute("status") != "placed") {
+                    lastBlock.style.backgroundColor = "gray"
+                    lastBlock.setAttribute("status", "blank")
+                }
+            }
+            //make the current block yellow
+            selectedBlock = document.getElementById(listOfOriginalBlocks[x] + increase)
+            selectedBlock.style.backgroundColor = color
+            selectedBlock.setAttribute("status", "falling")
+        }
+        moveBlockDownInterval = setInterval(function () {
+            //make the top row gray
+            var clearTopCounter = 0
+            while (clearTopCounter <= 12) {
+                clearTopCounter++
+                var clearTopBlock = document.getElementById(clearTopCounter)
+                clearTopBlock.style.backgroundColor = "gray"
+                clearTopBlock.setAttribute("status", "blank")
+            }
+            //check if the block hit the bottom 
+            var check = "ok"
+            for (x in listOfBottomAndPlacedBlocks) {
+                var aboveBlock = document.getElementById(listOfBottomAndPlacedBlocks[x] - 12)
+                if (aboveBlock.getAttribute("status") == "falling") {
+                    check = "not ok"
+                    for (var y = 1; y <= 276; y++) {
+                        var selectedBlock = document.getElementById(y)
+                        if (selectedBlock.getAttribute("status") == "falling") {
+                            selectedBlock.setAttribute("status", "placed")
+                            listOfBottomAndPlacedBlocks.push(selectedBlock.id)
+                        }
+                    }
+                }
+            }
+            if (check == "ok") {
+                increase = increase + 12
+            }
+            //for if block is placed
+            else {
+                //for if you lose
+                if (increase == 0) {
+                    clearInterval(moveBlockDownInterval)
+                    tetrisTable.remove()
+                    var loseText = document.createElement("textarea")
+                    loseText.textContent = "You lose!"
+                    loseText.style.backgroundColor = "lightblue"
+                    loseText.disabled = true
+                    div1.append(loseText)
+                }
+                increase = 0
+                rightCount = 0
+                rotationCounter = 0
+                checkFillRow()
+                enterBlock()
+                placeCount++
+                console.log(placeCount)
+                updateTimer()
+            }
+            clearInterval(moveBlockDownInterval)
+            cleanBoard()
+            checkPlacedError()
+            moveBlockDown()
+        }, timerLength)
+    }
+
+    function updateTimer() {
+        var level
+        if (placeCount <= 10) {
+            timerLength = 1000
+            level = 1
+            titleScreenStartButton.style.backgroundColor="lightgreen"
+        }
+        else if (placeCount <= 20) {
+            timerLength = 900
+            level = 2
+        }
+        else if (placeCount <= 30) {
+            timerLength = 800
+            level = 3
+        }
+        else if (placeCount <= 40) {
+            timerLength = 700
+            level = 4
+        }
+        else if (placeCount <= 50) {
+            timerLength = 600
+            level = 5
+            titleScreenStartButton.style.backgroundColor="yellow"
+        }
+        else if (placeCount <= 60) {
+            timerLength = 500
+            level = 6
+        }
+        else if (placeCount <= 70) {
+            timerLength = 400
+            level = 7
+        }
+        else if (placeCount <= 80) {
+            timerLength = 300
+            level = 8
+
+        }
+        else if (placeCount <= 90) {
+            timerLength = 200
+            level = 9
+        }
+        else {
+            timerLength = 100
+            level = 10
+            titleScreenStartButton.style.backgroundColor="red"
+        }
+        titleScreenStartButton.textContent = ("Level " + level)
+    }
+
+
+    function loadTetrisTable() {
+        //attatch tetrisTable to div1, making it visible
+        div1.appendChild(tetrisTable)
+        //make the tetris board's rows
+        var rowCount = 1
+        while (rowCount <= 24) {
+            var tetrisTableRow = document.createElement("tr")
+            tetrisTable.appendChild(tetrisTableRow)
+            rowCount++
+            var cellCount = 1
+            //make the rows of the board's cells
+            while (cellCount <= 12) {
+                var tetrisTableRowCell = document.createElement("td")
+                tetrisTableRowCell.style.height = "25px"
+                tetrisTableRowCell.style.width = "25px"
+                tetrisTableRowCell.style.backgroundColor = "gray"
+                tetrisTableRow.appendChild(tetrisTableRowCell)
+                cellCount++
+                totalNumberOfCells++
+                tetrisTableRowCell.id = totalNumberOfCells
+                tetrisTableRowCell.setAttribute("status", "blank")
+                //tetrisTableRowCell.textContent = totalNumberOfCells
+            }
+        }
+    }
+
+    function cleanBoard() {
+        for (var x = 1; x <= 288; x++) {
+            var selectedBlock = document.getElementById(x)
+            if (selectedBlock.style.backgroundColor != "gray" && selectedBlock.getAttribute("status") != "falling" && selectedBlock.getAttribute("status") != "placed") {
+                selectedBlock.style.backgroundColor = "gray"
+            }
+        }
+    }
+
+    function checkFillRow() {
+        // check if a block on the left boundary is placed
+        var leftBoundList = [1, 13, 25, 37, 49, 61, 73, 85, 97, 109, 121, 133, 145, 157, 169, 181, 193, 205, 217, 229, 241, 253, 265]
+        for (x in leftBoundList) {
+            var checkList = []
+            var selectedBlock = document.getElementById(leftBoundList[x])
+            if (selectedBlock.getAttribute("status") == "placed") {
+                //check if the other blocks in that row are also placed
+                var right = 0
+                completelyFilled = true
+                while (right < 11) {
+                    right++
+                    var rightBlock = document.getElementById(leftBoundList[x] + right)
+                    checkList.push(rightBlock.id)
+                    // if any block in the row is not placed, set compeltelyFilled to false.
+                    if (rightBlock.getAttribute("status") == "blank") {
+                        completelyFilled = false
+                    }
+                }
+                // if they all are placed, state that this row is completely filled.
+                if (completelyFilled == true) {
+                    listOfBottomAndPlacedBlocks = [277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288]
+                    console.log("completely filled")
+                    // Delete all blocks in the filled row.
+                    for (t in checkList) {
+                        var selectedBlock = document.getElementById(checkList[t])
+                        selectedBlock.style.backgroundColor = "gray"
+                        selectedBlock.setAttribute("status", "blank")
+                    }
+                    checkList = []
+                    // For all cells whose id is less than that of the leftmost block of a blank row, move all placed blocks down one.
+                    for (y = 276; y >= 1; y--) {
+                        if (y < leftBoundList[x]) {
+                            var originalBlock = document.getElementById(y)
+                            if (originalBlock.getAttribute("status") == "placed") {
+                                originalBlock.setAttribute("status", "blank")
+                                //update all the blocks
+                                var nextBlock = document.getElementById(y + 12)
+                                nextBlock.style.backgroundColor = originalBlock.style.backgroundColor
+                                nextBlock.setAttribute("status", "placed")
+                                listOfBottomAndPlacedBlocks.push(y + 12)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function updateDifficulty() {
+        console.log("aaa")
+    }
+
+    function inputUpDownLeftRight() {
+        onkeyup = function () {
+            var pressedKey = event.keyCode
+            //for moving down
+            if (pressedKey == 40) {
+                clearInterval(moveBlockDownInterval)
+                updateTimer()
+                moveBlockDown()
+            }
+        }
+        onkeydown = function () {
+            var pressedKey = event.keyCode
+            var onLeft = false
+            var onPlacedBlockError = false
+            //for moving down
+            if (pressedKey == 40) {
+                clearInterval(moveBlockDownInterval)
+                timerLength = 30
+                moveBlockDown()
+            }
+            //for left
+            if (pressedKey == 37) {
+                rightCount--
+                clearInterval(moveBlockDownInterval)
+                //if any block that is currently falling is in listOfLeftMostCells, set onLeft to true.
+                for (x in listOfLeftmostCells) {
+                    var selectedCell = document.getElementById(listOfLeftmostCells[x])
+                    if (selectedCell.getAttribute("status") == "falling") {
+                        onLeft = true
+                    }
+                }
+                if (onLeft == false) {
+                    //check if you are moving into an already placed block
+                    for (x in listOfOriginalBlocks) {
+                        var y = document.getElementById(listOfOriginalBlocks[x] + increase - 1)
+                        if (y.getAttribute("status") == "placed") {
+                            onPlacedBlockError = true
+                        }
+                    }
+                    if (onPlacedBlockError == false) {
+                        //make the old blocks gray
+                        for (x in listOfOriginalBlocks) {
+                            var oldBlockPos = document.getElementById(listOfOriginalBlocks[x] + increase)
+                            oldBlockPos.style.backgroundColor = "gray"
+                            oldBlockPos.setAttribute("status", "blank")
+                            listOfOriginalBlocks[x] = listOfOriginalBlocks[x] - 1
+                        }
+                        //make the new blocks yellow
+                        for (x in listOfOriginalBlocks) {
+                            var newBlockPos = document.getElementById(listOfOriginalBlocks[x] + increase)
+                            newBlockPos.style.backgroundColor = color
+                            newBlockPos.setAttribute("status", "falling")
+                        }
+                    }
+                }
+                moveBlockDown()
+            }
+            var pressedKey = event.keyCode
+            var onRight = false
+            var onPlacedBlockError = false
+            //for moving right
+            if (pressedKey == 39) {
+                rightCount++
+                clearInterval(moveBlockDownInterval)
+                //if any block that is currently falling is in listOfRightMostCells, set onLeft to true.
+                for (x in listOfRightmostCells) {
+                    var selectedCell = document.getElementById(listOfRightmostCells[x])
+                    if (selectedCell.getAttribute("status") == "falling") {
+                        onRight = true
+                    }
+                }
+                if (onRight == false) {
+                    //check if you are moving into an already placed block
+                    for (x in listOfOriginalBlocks) {
+                        var y = document.getElementById(listOfOriginalBlocks[x] + increase + 1)
+                        if (y.getAttribute("status") == "placed") {
+                            onPlacedBlockError = true
+                        }
+                    }
+                    if (onPlacedBlockError == false) {
+                        //make the old blocks gray
+                        for (x in listOfOriginalBlocks) {
+                            var oldBlockPos = document.getElementById(listOfOriginalBlocks[x] + increase)
+                            oldBlockPos.style.backgroundColor = "gray"
+                            oldBlockPos.setAttribute("status", "blank")
+                            listOfOriginalBlocks[x] = listOfOriginalBlocks[x] + 1
+                        }
+                        //make the new blocks yellow
+                        for (x in listOfOriginalBlocks) {
+                            var newBlockPos = document.getElementById(listOfOriginalBlocks[x] + increase)
+                            newBlockPos.style.backgroundColor = color
+                            newBlockPos.setAttribute("status", "falling")
+                        }
+                    }
+                }
+                moveBlockDown()
+            }
+            //for rotating
+            if (pressedKey == 38) {
+                clearInterval(moveBlockDownInterval)
+                console.log("rightcount: " + rightCount)
+                if (color == "blue") {
+                    for (var x = 1; x <= 288; x++) {
+                        var selectedBlock = document.getElementById(x)
+                        if (selectedBlock.getAttribute("status") == "falling") {
+                            selectedBlock.style.backgroundColor = "gray"
+                            selectedBlock.setAttribute("status", "blank")
+                        }
+                    }
+                    if (rotationCounter == 0) {
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [31 + rightCount, 30 + rightCount, 18 + rightCount, 6 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    if (rotationCounter == 3) {
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [19 + rightCount, 18 + rightCount, 17 + rightCount, 7 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    if (rotationCounter == 1) {
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [29 + rightCount, 19 + rightCount, 18 + rightCount, 17 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    if (rotationCounter == 2) {
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [30 + rightCount, 18 + rightCount, 6 + rightCount, 5 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    rotationCounter++
+                    if (rotationCounter == 4) {
+                        rotationCounter = 0
+                    }
+                }
+                if (color == "lightblue") {
+                    for (var x = 1; x <= 288; x++) {
+                        var selectedBlock = document.getElementById(x)
+                        if (selectedBlock.getAttribute("status") == "falling") {
+                            selectedBlock.style.backgroundColor = "gray"
+                            selectedBlock.setAttribute("status", "blank")
+                        }
+                    }
+                    if (rotationCounter == 0) {
+                        console.log(rotationCounter)
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [42 + rightCount, 30 + rightCount, 18 + rightCount, 6 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    if (rotationCounter == 1) {
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [7 + rightCount, 6 + rightCount, 5 + rightCount, 4 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    rotationCounter++
+                    if (rotationCounter == 2) {
+                        rotationCounter = 0
+                    }
+                }
+                if (color == "orange") {
+                    for (var x = 1; x <= 288; x++) {
+                        var selectedBlock = document.getElementById(x)
+                        if (selectedBlock.getAttribute("status") == "falling") {
+                            selectedBlock.style.backgroundColor = "gray"
+                            selectedBlock.setAttribute("status", "blank")
+                        }
+                    }
+                    if (rotationCounter == 0) {
+                        console.log(rotationCounter)
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [30 + rightCount, 18 + rightCount, 7 + rightCount, 6 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    if (rotationCounter == 3) {
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [19 + rightCount, 18 + rightCount, 17 + rightCount, 5 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    if (rotationCounter == 1) {
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [31 + rightCount, 19 + rightCount, 18 + rightCount, 17 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    if (rotationCounter == 2) {
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [30 + rightCount, 29 + rightCount, 18 + rightCount, 6 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    rotationCounter++
+                    if (rotationCounter == 4) {
+                        rotationCounter = 0
+                    }
+                }
+                if (color == "violet") {
+                    for (var x = 1; x <= 288; x++) {
+                        var selectedBlock = document.getElementById(x)
+                        if (selectedBlock.getAttribute("status") == "falling") {
+                            selectedBlock.style.backgroundColor = "gray"
+                            selectedBlock.setAttribute("status", "blank")
+                        }
+                    }
+                    if (rotationCounter == 0) {
+                        console.log(rotationCounter)
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [30 + rightCount, 19 + rightCount, 18 + rightCount, 6 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    if (rotationCounter == 3) {
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [19 + rightCount, 18 + rightCount, 17 + rightCount, 6 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    if (rotationCounter == 1) {
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [30 + rightCount, 19 + rightCount, 18 + rightCount, 17 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    if (rotationCounter == 2) {
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [30 + rightCount, 18 + rightCount, 17 + rightCount, 6 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    rotationCounter++
+                    if (rotationCounter == 4) {
+                        rotationCounter = 0
+                    }
+                }
+                if (color == "red") {
+                    for (var x = 1; x <= 288; x++) {
+                        var selectedBlock = document.getElementById(x)
+                        if (selectedBlock.getAttribute("status") == "falling") {
+                            selectedBlock.style.backgroundColor = "gray"
+                            selectedBlock.setAttribute("status", "blank")
+                        }
+                    }
+                    if (rotationCounter == 0) {
+                        console.log(rotationCounter)
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [30 + rightCount, 19 + rightCount, 18 + rightCount, 7 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    if (rotationCounter == 1) {
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [19 + rightCount, 18 + rightCount, 6 + rightCount, 5 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    rotationCounter++
+                    if (rotationCounter == 2) {
+                        rotationCounter = 0
+                    }
+                }
+                if (color == "lightgreen") {
+                    for (var x = 1; x <= 288; x++) {
+                        var selectedBlock = document.getElementById(x)
+                        if (selectedBlock.getAttribute("status") == "falling") {
+                            selectedBlock.style.backgroundColor = "gray"
+                            selectedBlock.setAttribute("status", "blank")
+                        }
+                    }
+                    if (rotationCounter == 1) {
+                        console.log(rotationCounter)
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [19 + rightCount, 18 + rightCount, 8 + rightCount, 7 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    if (rotationCounter == 0) {
+                        for (x in listOfOriginalBlocks) {
+                            updatedList = [31 + rightCount, 19 + rightCount, 18 + rightCount, 6 + rightCount]
+
+                        }
+                        rotationCheck()
+                    }
+                    rotationCounter++
+                    if (rotationCounter == 2) {
+                        rotationCounter = 0
+                    }
+                }
+                //nothing happens for the square cube so that one's missing from here.
+
+                moveBlockDown()
+            }
+        }
+        function rotationCheck() {
+            var rotatingCheck = false
+            for (x in updatedList) {
+                var selectedBlock = document.getElementById(updatedList[x] + increase)
+                //selectedBlock.textContent=""
+                if (selectedBlock.getAttribute("status") == "placed") {
+                    console.log("mining")
+                    rotatingCheck = true
+                }
+                //check for left bound
+                for (y in listOfLeftmostCells) {
+                    var selectedBlock = document.getElementById(listOfLeftmostCells[y])
+                    if (updatedList[x] == listOfLeftmostCells[y]) {
+                        rotatingCheck = true
+                        console.log("left bound")
+                    }
+                }
+                //check for right bound
+                for (y in listOfRightmostCells) {
+                    var selectedBlock = document.getElementById(listOfRightmostCells[y])
+                    if (updatedList[x] == listOfRightmostCells[y]) {
+                        rotatingCheck = true
+                        console.log("right bound")
+                    }
+                }
+            }
+            if (rotatingCheck == false) {
+                listOfOriginalBlocks = updatedList
+                updatedList = []
+            }
+        }
+    }
+</script>
+
+
+</html>

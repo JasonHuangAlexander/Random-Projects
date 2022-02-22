@@ -1,0 +1,559 @@
+<html>
+
+<div id="div1"></div>
+<script>
+    document.body.style.backgroundColor = "E2AF77"
+    //set up tiles
+    var saveCell = 0
+    var doorList = []
+    var teleporterEntranceList = []
+    var teleporterExitList = []
+    var moveCounter = 0
+    var currentLevel = 1
+    var coinNumber = 0
+    var userCellId
+    var totalTileCount = 0
+    var listOfTiles = []
+    var listOfFireCells = []
+    var map = document.createElement("table")
+    div1.appendChild(map)
+
+    function makeTileButton() {
+        totalTileCount++
+        var tile = document.createElement("td")
+        tile.id = (totalTileCount)
+        tile.style.width = "20px"
+        tile.style.height = "20px"
+        tile.style.fontSize = "11px"
+        var pickColor = Math.round(Math.random(0, 1))
+        if (pickColor == 0) {
+            tile.style.backgroundColor = "EEBE8B"
+            tile.setAttribute("originalColor", "EEBE8B")
+        }
+        else {
+            tile.style.backgroundColor = "DCB081"
+            tile.setAttribute("originalColor", "DCB081")
+        }
+        tile.onmouseover = function () {
+            tile.style.borderColor = "red"
+        }
+        tile.onclick = function () {
+            if (coinNumber > 0) {
+                if (tile.getAttribute("status") == "open" && tile.getAttribute("border") == "none") {
+                    var update = document.getElementById("coinSlot")
+                    update.textContent = "Blocks: " + (coinNumber - 1)
+                    tile.style.backgroundColor = "yellow"
+                    tile.setAttribute("status", "wall")
+                    tile.setAttribute("wallStatus", "placed")
+                    coinNumber--
+                }
+            }
+        }
+        tile.setAttribute("status", "open")
+        tile.setAttribute("border", "none")
+        row.appendChild(tile)
+        listOfTiles.push(tile.id)
+        //tile.textContent = tile.id
+    }
+    for (var x = 1; x <= 30; x++) {
+        var row = document.createElement("tr")
+        map.appendChild(row)
+        for (var y = 1; y <= 40; y++) {
+            makeTileButton()
+        }
+    }
+
+    //add an inventory space
+    var levelCounter = document.createElement("button")
+    levelCounter.id = "levelCounterThing"
+    levelCounter.style.backgroundColor = "lightgray"
+    levelCounter.style.width = "130px"
+    levelCounter.style.height = "80px"
+    levelCounter.disabled = "true"
+    levelCounter.textContent = ("Level " + currentLevel)
+    levelCounter.style.color = "black"
+    div1.append(levelCounter)
+    var inventorySlot2 = document.createElement("button")
+    inventorySlot2.id = "coinSlot"
+    inventorySlot2.style.backgroundColor = "E3ECE8"
+    inventorySlot2.style.width = "130px"
+    inventorySlot2.style.height = "80px"
+    inventorySlot2.disabled = "true"
+    inventorySlot2.textContent = "temp"
+    inventorySlot2.style.color = "E3ECE8"
+    inventorySlot2.style.visibility = "hidden"
+    div1.append(inventorySlot2)
+
+
+    //-------------------------------------------------------map design------------------------------------------------------------------------
+    var listOfWalls = []
+    var currentlyMoving = false
+
+    function loadLevel(level) {
+        var updateLevelCounter = document.getElementById("levelCounterThing")
+        updateLevelCounter.textContent = "Level " + level
+        if (level == 1) {
+            placeWalls([635, 636, 634, 633, 632, 275, 315, 355, 395, 435, 487, 527, 567, 607, 647, 1009, 1049, 1089, 1129, 969, 48, 88, 128, 168, 208])
+            var userCell = document.getElementById(563)
+            userCell.style.backgroundColor = "white"
+            userCellId = 563
+            var exitCell = document.getElementById(596)
+            exitCell.style.backgroundColor = "lightgreen"
+            exitCell.setAttribute("status", "exit")
+        }
+        if (level == 2) {
+            placeWalls([565, 74, 675, 183, 76, 719, 1021, 397, 1074, 1075, 1076, 1077, 1078, 943, 775, 815, 855, 895, 735, 1100, 616, 1050, 1051, 1052, 1053, 1054, 666, 667, 668, 669, 670, 110, 111, 112, 113, 114, 250, 883, 134, 124, 125, 126, 127, 128, 296, 336, 376, 416, 456, 55, 56, 57, 58, 59])
+            var userCell = document.getElementById(563)
+            userCell.style.backgroundColor = "white"
+            userCellId = 563
+            var exitCell = document.getElementById(118)
+            exitCell.style.backgroundColor = "lightgreen"
+            exitCell.setAttribute("status", "exit")
+        }
+        if (level == 3) {
+            placeWalls([1158, 947, 856, 989, 1150, 612, 812, 1062, 973, 1047, 940, 1079, 1129, 631, 832, 916, 1035, 114, 989, 420, 372, 138, 471, 215, 309, 486, 71, 476, 143, 394, 548, 341, 279, 189, 494, 51, 248, 115, 196, 47, 87, 245, 85, 125, 165, 205, 285, 325, 365, 405, 445, 485, 525, 605, 645, 685, 725, 765, 805, 845, 885, 925, 965, 1005, 1045, 1085, 565, 566, 567, 568, 569, 576, 577, 570, 571, 572, 573, 574, 575, 578, 579, 580, 581, 582, 583, 584, 585, 586, 587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598, 599])
+            var userCell = document.getElementById(563)
+            userCell.style.backgroundColor = "white"
+            userCellId = 563
+            var exitCell = document.getElementById(1159)
+            exitCell.style.backgroundColor = "lightgreen"
+            exitCell.setAttribute("status", "exit")
+            var coinCell = document.getElementById(79)
+            coinCell.style.backgroundColor = "yellow"
+            coinCell.setAttribute("status", "coin")
+        }
+        if (level == 4) {
+            var userCell = document.getElementById(563)
+            userCell.style.backgroundColor = "white"
+            userCellId = 563
+            var exitCell = document.getElementById(403)
+            exitCell.style.backgroundColor = "lightgreen"
+            exitCell.setAttribute("status", "exit")
+            placeCoins([1105,1106])
+            placeFireCells([618, 1087, 380, 682, 722, 382, 384, 414, 415, 416, 417, 418, 448, 449, 450, 451, 452, 485, 486, 918, 919, 872, 873, 874, 875, 876, 826, 827, 828, 829, 830, 482, 781, 783, 483, 484])
+            placeWalls([545, 146, 762, 925, 1048, 994, 1155, 367, 887, 619, 591, 1032, 853, 945, 370, 209, 179, 974, 1126, 1037, 252, 86, 77, 278, 279, 312, 313, 314, 315, 316, 346, 347, 348, 349, 350, 381, 383, 780, 782, 784, 642, 643, 644, 645, 646, 688, 689, 690, 734, 735, 736, 737, 738, 691, 692])
+        }
+        if (level == 5) {
+            placeWalls([72, 112, 152, 192, 232, 272, 312, 352, 392, 472, 512, 552, 592, 632, 672, 712, 752, 792, 832, 872, 912, 952, 992, 1032, 1072, 1112, 1152, 729, 45, 1006, 1008, 648, 845, 885, 925, 1005, 1045, 1085, 1125, 246, 247, 248, 85, 125, 165, 205, 245, 49, 89, 129, 169, 209, 249, 289, 529, 569, 609, 649, 646, 647, 689, 769, 809, 849, 889, 929, 969, 1009, 1049, 1089, 1129, 488, 407, 449, 409, 369, 329, 326, 327, 486, 489, 685, 725, 765, 805, 804, 803, 644, 483, 365, 325, 324, 323, 322, 482, 405, , 642, 485, 525, 565, 605, 645])
+            var userCell = document.getElementById(563)
+            userCell.style.backgroundColor = "white"
+            userCellId = 563
+            var exitCell = document.getElementById(598)
+            exitCell.style.backgroundColor = "lightgreen"
+            exitCell.setAttribute("status", "exit")
+            placeFireCells([73, 74, 75, 76, 77, 78, 79, 1153, 1154, 1155, 1156, 1157, 1158, 1159, 1122, 1123, 1124])
+            placeCoins([84, 124, 164, 42, 43, 44, 46, 47, 48, 86, 87, 88, 126, 127, 128, 166, 167, 168, 206, 207, 208])
+            doorList = [45, 729]
+            placeButtons([607, 1087])
+        }
+        if (level == 6) {
+            var userCell = document.getElementById(563)
+            userCell.style.backgroundColor = "white"
+            userCellId = 563
+            var exitCell = document.getElementById(598)
+            exitCell.style.backgroundColor = "lightgreen"
+            exitCell.setAttribute("status", "exit")
+            placeWalls([1042, 1043, 1044, 1084, 1124, 639, 597, 637, 638, 638, 599, 559, 123, 124, 125, 1135, 1136, 1137, 621, 622, 623, 555, 556, 557, 558, 195, 196, 194, 91, 92, 90, 574, 575, 573, 988, 989, 987, 433, 434, 432, 794, 795, 793, 65, 66, 64, 723, 724, 722, 138, 137, 136])
+            placeFireCells([473, 796, 754, 792, 948, 155, 67, 84, 614, 177, 131, 51, 763, 725, 1095])
+            doorList = [597, 1124, 637, 638, 639]
+            placeButtons([1122, 1134, 63, 42, 393])
+        }
+        if (level == 7) {
+            var userCell = document.getElementById(563)
+            userCell.style.backgroundColor = "white"
+            userCellId = 563
+            var exitCell = document.getElementById(581)
+            exitCell.style.backgroundColor = "lightgreen"
+            exitCell.setAttribute("status", "exit")
+            placeWalls([670, 671, 672, 712, 752, 612, 572, 491, 493, 492, 613, 894, 934, 974, 975, 976, 977, 978, 938, 898, 865, 857, 858, 859, 860, 861, 862, 863, 864, 294, 334, 374, 414, 454, 494, 534, 614, 654, 694, 734, 774, 814, 854, 829, 831, 871, 911, 910, 909, 908, 907, 906, 866, 826, 305, 865, 224, 225, 226, 227, 228, 229, 269, 309, 349, 389, 429, 469, 509, 549, 589, 629, 669, 709, 749, 789, 307, 855, 295, 296, 297, 298, 299, 259, 219, 220, 221, 223, 222, 303, 343, 416, 456, 496, 536, 576, 616, 656, 696, 736, 464, 584, 704, 701, 698, 578, 458, 461])
+            placeFireCells([750, 426, 466, 506, 546, 586, 626, 666, 706, 746, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 376, 377, 378, 379, 380, 381, 382, 383, 384, 385, 386, 540, 541, 542, 582, 622, 621, 620, 580])
+            doorList = [582, 576, 865, 382, 746]
+            placeButtons([545, 260, 344, 710, 579])
+            placeCoins([611, 899, 935, 937, 300, 533, 301])
+        }
+        if (level == 9) {
+            var userCell = document.getElementById(206)
+            userCell.style.backgroundColor = "white"
+            userCellId = 206
+            placeFireCells([264, 72, 475, 477, 479, 473, 148, 188, 143, 444, 487, 446, 447, 1157, 1158, 1159, 661, 982, 884, 899, 939, 980, 1020, 1059, 1018, 977, 937, 897])
+            placeWalls([635, 63, 116, 117, 118, 119, 519, 559, 599, 639, 679, 719, 759, 517, 557, 597, 677, 717, 757, 193, 194, 195, 192, 515, 555, 595, 675, 715, 755, 834, 838, 836, 837, 839, 308, 387, 388, 389, 390, 430, 268, 107, 108, 188, 228, 105, 183, 184, 185, 186, 266, 306, 146, 106, 66, 958, 999, 1039, 954, 955, 956, 957, 959, 1156, 1116, 1076, 1074, 882, 993, 1033, 1073, 1113, 1153, 833, 873, 913, 953, 553, 593, 633, 673, 713, 753, 793, 762, 763, 764, 765, 805, 845, 885, 925, 965, 964, 963, 1003, 1043, 1042, , 62, 102, 142, 182, 222, 262, 302, 303, 304, 305, 345, 385, 425, 465, 505, 506, 507, 508, 509, 510, 511, 512, 513])
+            placeCoins([1051, 1107, 723, 69, 1027, 1146, 1106, 225, 265, 68, 67, 223, 224, 636, 638, , 879, 919, 324, 329, 411, 449, 450, 367, 285, 323, 326, 327, 328, 369, 371, 451, 490, 530, 448, 407, 404, 365, 325, 364, 408, 410, 372, 1068, 1137, 802, 844, 804, 583, 584, 624, 544, 585, 623, 582])
+            doorList = [531, 497, 1042, 1153, 958, 1116, 146]
+            placeButtons([370, 642, 128, 924, 808, 464, 429])
+            placeWallTypeTwo([778, 655, 652, 733, 88, 129, 90, 93, 53, 92, 89, 609, 611, 732, 771, 811, 850, 1047, 1049, 952, 789, 217, 687, 1088, 888, 927, 849, 985, 945, 904, 905, 946, 809, 571, 572, 612, 769, 770, 730, 810, 848, 1012, 1053, 911, 910, 871, 831, 1052, 1056, 936, 896, 816, 777, 820, 940, 1100, 1098, 1139, 1140, 1141, 1143, 1144, 1145, 1104, 857, 1017, 901, 1147, 1108, 1029, 988, 1024, 859, 983, 944, 61, 60, 59, 101, 100, 141, 181, 632, 631, 672, 671, 712, 872, 792, 752, 832, 912, 552, 592, 547, 548, 549, 587, 627, 588, 1138, 1025, 986, 987, 1028, 1069, 1109, 1148, 942, 943, 984, 856, 895, 935, 976, 1016, 1057, 1058, 1099, 1060, 1021, 981, 941, 900, 860, 819, 818, 817, 1014, 1013, 1015, 972, 973, 772, 812, 851, 890, 889, 928, 967, 1048, 1009, 970, 971, 651, 691, 731, 744, 743, 745, 705, 666, 706, 463, 546, 665, 703, 702, 620, 586, 626, 625, 622, 662, 663, 503, 504, 545, 340, 339, 300, 301, 341, 342, 383, 423, 619, 621, 577, 536, 417, 378, 537, 578, 581, 542, 457, 497, 538, 579, 580, 541, 502, 462, 422, 382, 381, 418, 379, 380, 564, 565, 528, 568, 569, 610, 492, 413, 453, 374, 524, 525, 526, 527, 488, 489, 529, 362, 363, 402, 403, 442, 443, 483, 484, 523, 563, 603, 643, 682, 722, 683, 412, 452, 491, 531, 570, 332, 293, 294, 334, 333, 373, 254, 330, 331, 288, 287, 286, 134, 247, 289, 292, 55, 56, 95, 135, 214, 248, 249, 290, 291, 252, 253, 173, 133, 94, 54, 48, 49, 283, 322, 284, 167, 207, 245, 246, 242, 282, 243, 244, 87, 127, 126, 42, 43, 44, 45, 46, 47, 82, 83, 122, 162, 202, 203])
+            var exitCell = document.getElementById(460)
+            exitCell.style.backgroundColor = "lightgreen"
+            exitCell.setAttribute("status", "exit")
+            teleporterExitList = [482, 103, 485, 52, 140, 1023, 543, 858, 343]
+            placeTeleporterEntrance([263, 79, 1079, 163, 208, 861, 1008, 704, 65])
+        }
+        if (level == 8) {
+            var userCell = document.getElementById(1043)
+            userCell.style.backgroundColor = "white"
+            userCellId = 1043
+            var exitCell = document.getElementById(1119)
+            exitCell.style.backgroundColor = "lightgreen"
+            exitCell.setAttribute("status", "exit")
+            for (var x = 1; x < 961; x++) {
+                if (x != 808 && x != 809 && x != 810 && x != 850 && x != 849 && x != 889 && x != 929 && x != 946 && x != 906 && x != 866 && x != 826) {
+                    var selectedCell = document.getElementById(x)
+                    if (selectedCell.getAttribute("border") == "none") {
+                        placeFireCells([x])
+                    }
+                }
+            }
+            placeCoins([808, 810, 850])
+            var step1 = document.getElementById(906)
+            step1.style.backgroundColor = "966734"
+            step1.setAttribute("status", "caveEntrance")
+            var step2 = document.getElementById(866)
+            step2.style.backgroundColor = "4d3419"
+            var step3 = document.getElementById(826)
+            step3.style.backgroundColor = "2d1d0b"
+            placeWalls([998, 999, 1077, 1117, 1157])
+            placeWallTypeTwo([1098, 1138, 1139, 1099, 1058, 1097, 799, 839, 879, 838, 798, 837, 876, 878, 877, 916, 915, 914, 875, 823, 781, 782, 858, 903, 864, 863, 824, 822, 821, 820, 859, 819, 807, 729, 728, 772, 812, 852, 853, 893, 894, 887, 846, 928, 730, 07, 848, 890, 928, 888, 847, 771, 811, 851, 767, 768, 769, 770, 926, 967, 971, 931, 930, 927, 886, 746, 747, 897, 898, 899, 932, 892, 891, 882, 1124, 1143, 1146, 1145, 1103, 1142, 943, 983, 982, 937, 938, 978, 965, 966, 1125, 1126, 1086, 989, 959, 919, 918, 958, 954, 922, 1153, 908, 948, 936, 988, 828, 944, 904, 933, 934, 922, 923, 925, 787, 827, 867, 907, 947, 825, 865, 905, 945, 785, 786, 987, 988, 1027, 1028, 1133, 1134, 972, 973])
+        }
+        if (level == 10) { //should take 24 coins to complete
+            var userCell = document.getElementById(523)
+            userCell.style.backgroundColor = "white"
+            userCellId = 523
+            var exitCell = document.getElementById(558)
+            exitCell.style.backgroundColor = "lightgreen"
+            exitCell.setAttribute("status", "exit")
+            placeWalls([1148, 1108, 1068, 1028, 75, 751, 752, 753, 266, 267, 268, 269, 750, 667, 747, 787, 74, 474, 475, 591, 1035, 1116, 102, 359, 822, 191, 476, 477, 581, 582, 583, 584, 428, 909, 875, 505, 1106, 1064, 73, 72, 756, 757, 758, 759, 660, 661, 662, 663, 981, 982, 983, 984, 859, 819, 779, 739, 699, 659, 619, 579, 539, 499, 459, 419, 379, 339, 299, 259, 219, 179, 139, 99, 59, 1139, 1019, 1059, 1099, 939, 899])
+            placeCoins([42, 43, 82, 83, 603, 1048])
+            placeFireCells([456, 84, 165, 202, 169, 129, 90, 49, 47, 127, 167, 207, 209, 210, 211, 212, 213, 253, 972, 1012, 1052, 894, 1002, 1004, 1005, 1082, 1123, 1084, 925, 1087, 1088, 1089, 1090, 1091, 1092, 1094, 1095, 1135, 286, 887, 928, 969, 326, 330, 247, 926, 293, 333, 334, 375, 691, 771, 850, 728, 649, 932, 812, 853, 854, 335, 414, 652, 613, 573, 575, 615, 655, 654, 412, 1047, 1086, 725, 494, 535, 536, 537, 802, 803, 804, 844, 924, 923, 886, 846, 806, 807, 731, 730, 410, 451, 368, 369, 409, 488, 527, 528, 529, 570, 366, 446, 683, 684, 685, 606, 402, 362, 282, 284, 285, 325, 365, 283, 364, 442, 444, 445, 485, 525, 565, 605, 604, 602])
+        }
+        if (level == 11) {
+            var userCell = document.getElementById(523)
+            userCell.style.backgroundColor = "white"
+            userCellId = 523
+            teleporterExitList = [734,750,470,454,445]
+            placeTeleporterEntrance([454,470,750,734,478])
+            placeCoins([42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79])
+            placeCoins([1122, 1123, 1124, 1125, 1126, 1127, 1128, 1129, 1130, 1131, 1132, 1133, 1134, 1135, 1136, 1137, 1138, 1139, 1140, 1141, 1142, 1143, 1144, 1145, 1146, 1147, 1148, 1149, 1150, 1151, 1152, 1153, 1154, 1155, 1156, 1157, 1158, 1159])
+            placeWalls([830, 870, 910, 950, 1030, 1069, 1028, 988, 948, 990, 1067, 1026, 986, 946, 906, 866, 826, 1077, 1037, 997, 957, 917, 877, 837, 834, 874, 914, 954, 994, 1034, 1074, 915, 832, 872, 912, 952, 992, 1032, 1072, 956, 124, 164, 204, 245, 285, 325, 206, 166, 126, 365, 168, 208, 132, 172, 212, 252, 292, 332, 373, 334, 294, 254, 214, 174, 134, 129, 170, 210, 250, 290, 330, , 248, 288, 328, 369])
+        }
+    }
+
+
+    loadLevel(currentLevel)
+    function loadCave(currentLevel) {
+        if (currentLevel == 8) {
+            for (x in listOfTiles) {
+                var reset = document.getElementById(listOfTiles[x])
+                if (reset.getAttribute("border") == "none") {
+                    reset.style.backgroundColor = reset.getAttribute("originalColor")
+                    reset.setAttribute("status", "open")
+                }
+            }
+        }
+        var userCell = document.getElementById(820)
+        userCell.style.backgroundColor = "white"
+        userCellId = 820
+        placeWallTypeTwo([870, 831, 832, 871, 794, 861, 407, 847, 327, 328, 329, 367, 368, 330, 447, 354, 394, 434, 874, 847, 848, 849, 850, 807, 806, 767, 144, 121, 122, 123, 124, 353, 352, 834, 974, 872, 873, 833, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 44, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 67, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79])
+        placeWallTypeTwo([882, 934, 883, 884, 885, 886, 887, 888, 889, 890, 891, 892, 893, 894, 895, 896, 897, 898, 899, 900, 901, 902, 903, 904, 905, 906, 907, 908, 909, 910, 911, 912, 913, 914, 915, 916, 917, 918, 919, 920, 921, 922, 923, 924, 925, 926, 927, 928, 929, 930, 931, 932, 933, 34, 935, 936, 937, 938, 939, 940, 941, 942, 943, 944, 945, 946, 947, 948, 949, 950, 951, 952, 953, 954, 955, 956, 957, 958, 959, 960, 961, 962, 963, 964, 965, 966, 967, 968, 969, 970, 971, 972, 973, 974, 975, 976, 977, 978, 979, 980, 981, 982, 983, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 994, 995, 996, 997, 998, 999, 1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1020, 1021, 1022, 1023, 1024, 1025, 1026, 1027, 1028, 1029, 1030, 1031, 1032, 1033, 1034, 1035, 1036, 1037, 1038, 1039, 1040, 1041, 1042, 1043, 1044, 1045, 1046, 1047, 1048, 1049, 1050, 1051, 1052, 1053, 1054, 1055, 1056, 1057, 1058, 1059, 1060, 1061, 1062, 1063, 1064, 1065, 1066, 1067, 1068, 1069, 1070, 1071, 1072, 1073, 1074, 1075, 1076, 1077, 1078, 1079, 1080, 1081, 1082, 1083, 1084, 1085, 1086, 1087, 1088, 1089, 1090, 1091, 1092, 1093, 1094, 1095, 1096, 1097, 1098, 1099, 1100, 1101, 1102, 1103, 1104, 1105, 1106, 1107, 1108, 1109, 1110, 1111, 1112, 1113, 1114, 1115, 1116, 1117, 1118, 1119, 1120, 1121, 1122, 1123, 1124, 1125, 1126, 1127, 1128, 1129, 1130, 1131, 1132, 1133, 1134, 1135, 1136, 1137, 1138, 1139, 1140, 1141, 1142, 1143, 1144, 1145, 1146, 1147, 1148, 1149, 1150, 1151, 1152, 1153, 1154, 1155, 1156, 1157, 1158, 1159])
+        placeWallTypeTwo([875, 876, 877, 878, 879, 835, 836, 837, 838, 839, 795, 796, 797, 798, 799, 755, 756, 757, 758, 759, 715, 716, 717, 718, 719, 675, 676, 677, 678, 679, 635, 636, 637, 638, 639, 595, 596, 597, 598, 599, 555, 556, 557, 558, 559, 515, 516, 517, 518, 519, 475, 476, 477, 478, 479, 435, 436, 437, 438, 439, 395, 396, 397, 398, 399, 355, 356, 357, 358, 359])
+        placeWallTypeTwo([842, 843, 844, 845, 846, 802, 803, 804, 805, 806, 762, 763, 764, 765, 766, 722, 723, 724, 725, 726, 682, 683, 684, 685, 686, 642, 643, 644, 645, 646, 602, 603, 604, 605, 606, 562, 563, 564, 565, 566, 522, 523, 524, 525, 526, 482, 483, 484, 485, 486, 442, 443, 444, 445, 446, 402, 403, 404, 405, 406, 362, 363, 364, 365, 366, 322, 323, 324, 325, 326])
+        var step1 = document.getElementById(900)
+        step1.style.backgroundColor = "966734"
+        step1.setAttribute("status", "caveExit1")
+        var step2 = document.getElementById(940)
+        step2.style.backgroundColor = "4d3419"
+        var step3 = document.getElementById(980)
+        step3.style.backgroundColor = "2d1d0b"
+        var saveCell = document.getElementById(580)
+        saveCell.setAttribute("status", "saveCell")
+        saveCell.style.backgroundColor = "purple"
+        placeCoins([808, 793])
+    }
+
+    var listOfBorderTopWalls = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40]
+    var listOfBorderRightWalls = [40, 80, 120, 160, 200, 240, 280, 320, 360, 400, 440, 480, 520, 560, 600, 640, 680, 720, 760, 800, 840, 880, 920, 960, 1000, 1040, 1080, 1120, 1160, 1200]
+    var listOfBorderLeftWalls = [1, 41, 81, 121, 161, 201, 241, 281, 321, 361, 401, 441, 481, 521, 561, 601, 641, 681, 721, 761, 801, 841, 881, 921, 961, 1001, 1041, 1081, 1121, 1161]
+    var listOfBorderBottomWalls = [1161, 1162, 1163, 1164, 1165, 1166, 1167, 1168, 1169, 1170, 1171, 1172, 1173, 1174, 1175, 1176, 1177, 1178, 1179, 1180, 1181, 1182, 1183, 1184, 1185, 1186, 1187, 1188, 1189, 1190, 1191, 1192, 1193, 1194, 1195, 1196, 1197, 1198, 1199, 1200]
+    function placeButtons(listOfButtons) {
+        for (x in listOfButtons) {
+            var selectedCell = document.getElementById(listOfButtons[x])
+            selectedCell.style.backgroundColor = "blue"
+            selectedCell.setAttribute("status", "button")
+            selectedCell.setAttribute("correspondingDoor", doorList[x])
+        }
+    }
+    function placeTeleporterEntrance(list) {
+        for (x in list) {
+            teleporterEntranceList = list
+            var selectedCell = document.getElementById(list[x])
+            selectedCell.style.backgroundColor = "pink"
+            selectedCell.setAttribute("status", "teleporterEntrance")
+            selectedCell.setAttribute("correspondingTeleporterExit", teleporterExitList[x])
+            var exitCell = document.getElementById(selectedCell.getAttribute("correspondingTeleporterExit"))
+            exitCell.style.backgroundColor = "pink"
+            exitCell.setAttribute("status", "teleporterExit")
+            exitCell.setAttribute("correspondingTeleporterEntrance", list[x])
+        }
+    }
+    function placeWallTypeTwo(listOfWalls) {
+        for (x in listOfWalls) {
+            var selectedCell = document.getElementById(listOfWalls[x])
+            selectedCell.style.backgroundColor = "brown"
+            selectedCell.setAttribute("status", "wall")
+        }
+    }
+    function placeWalls(listOfWalls) {
+        for (x in listOfWalls) {
+            var selectedCell = document.getElementById(listOfWalls[x])
+            selectedCell.style.backgroundColor = "black"
+            selectedCell.setAttribute("status", "wall")
+        }
+    }
+    function placeCoins(listOfCoins) {
+        for (x in listOfCoins) {
+            var selectedCell = document.getElementById(listOfCoins[x])
+            selectedCell.style.backgroundColor = "yellow"
+            selectedCell.setAttribute("status", "coin")
+        }
+    }
+    function placeFireCells(listOfFireCells) {
+        for (x in listOfFireCells) {
+            var selectedCell = document.getElementById(listOfFireCells[x])
+            selectedCell.style.backgroundColor = "red"
+            selectedCell.setAttribute("status", "fire")
+        }
+    }
+    for (x in listOfBorderRightWalls) {
+        var update = document.getElementById(listOfBorderRightWalls[x])
+        update.setAttribute("border", "right")
+        update.style.backgroundColor = "brown"
+    }
+    for (x in listOfBorderLeftWalls) {
+        var update = document.getElementById(listOfBorderLeftWalls[x])
+        update.setAttribute("border", "left")
+        update.style.backgroundColor = "brown"
+    }
+    for (x in listOfBorderBottomWalls) {
+        var update = document.getElementById(listOfBorderBottomWalls[x])
+        update.setAttribute("border", "bottom")
+        update.style.backgroundColor = "brown"
+    }
+    for (x in listOfBorderTopWalls) {
+        var update = document.getElementById(listOfBorderTopWalls[x])
+        update.setAttribute("border", "top")
+        update.style.backgroundColor = "brown"
+    }
+    function moveUser(direction) {
+        currentlyMoving = true
+        var moveUserInterval = setInterval(() => {
+            var oldBlockPosition = document.getElementById(userCellId)
+            var newBlockPosition = document.getElementById(userCellId + direction)
+            //console.log(newBlockPosition.id)
+            if (newBlockPosition.getAttribute("status") == "saveCell") {
+                saveCell = currentLevel
+                userCellId = userCellId + direction
+                if (oldBlockPosition.getAttribute("status") != "teleporterExit" && oldBlockPosition.getAttribute("status") != "teleporterEntrance") {
+                    oldBlockPosition.style.backgroundColor = oldBlockPosition.getAttribute("originalColor")
+                    oldBlockPosition.setAttribute("status", "open")
+                }
+                newBlockPosition.style.backgroundColor = "white"
+                newBlockPosition.setAttribute("status", "user")
+
+            }
+            else if (newBlockPosition.getAttribute("status") == "button") {
+                var selectedCell = document.getElementById(newBlockPosition.getAttribute("correspondingDoor"))
+                selectedCell.style.backgroundColor = selectedCell.getAttribute("originalColor")
+                selectedCell.setAttribute("status", "open")
+                selectedCell.setAttribute("correspondingDoor", "none")
+                userCellId = userCellId + direction
+                if (oldBlockPosition.getAttribute("status") != "teleporterExit" && oldBlockPosition.getAttribute("status") != "teleporterEntrance") {
+                    oldBlockPosition.style.backgroundColor = oldBlockPosition.getAttribute("originalColor")
+                    oldBlockPosition.setAttribute("status", "open")
+                }
+                newBlockPosition.style.backgroundColor = "white"
+                newBlockPosition.setAttribute("status", "user")
+            }
+            else if (newBlockPosition.getAttribute("status") == "teleporterEntrance") {
+                var selectedCell = document.getElementById(newBlockPosition.id)
+                var ok = selectedCell.getAttribute("correspondingTeleporterExit")
+                //console.log(ok)
+                var wow = document.getElementById(userCellId)
+                var ok1 = document.getElementById(parseInt(ok) + direction)
+                if (ok1.getAttribute("status") != "wall") {
+                    wow.style.backgroundColor = wow.getAttribute("originalColor")
+                    wow.setAttribute("status", "open")
+                    userCellId = parseInt(ok)
+                }
+                else {
+                    clearInterval(moveUserInterval)
+                    currentlyMoving = false
+                }
+            }
+            else if (newBlockPosition.getAttribute("status") == "teleporterExit") {
+                var selectedCell = document.getElementById(newBlockPosition.id)
+                var ok = selectedCell.getAttribute("correspondingTeleporterEntrance")
+                //console.log(ok)
+                var wow = document.getElementById(userCellId)
+                var ok1 = document.getElementById(parseInt(ok) + direction)
+                if (ok1.getAttribute("status") != "wall") {
+                    wow.style.backgroundColor = wow.getAttribute("originalColor")
+                    wow.setAttribute("status", "open")
+                    userCellId = parseInt(ok)
+                }
+                else {
+                    clearInterval(moveUserInterval)
+                    currentlyMoving = false
+                }
+            }
+            else if (newBlockPosition.getAttribute("status") == "coin") {
+                //console.log("ok")
+                var inventoryForCoin = document.getElementById("coinSlot")
+                coinNumber++
+                inventoryForCoin.style.visibility = "visible"
+                inventoryForCoin.textContent = "Blocks: " + coinNumber
+                inventoryForCoin.style.color = "black"
+                inventoryForCoin.style.backgroundColor = "DFD63D"
+                userCellId = userCellId + direction
+                if (oldBlockPosition.getAttribute("status") != "teleporterExit" && oldBlockPosition.getAttribute("status") != "teleporterEntrance") {
+                    oldBlockPosition.style.backgroundColor = oldBlockPosition.getAttribute("originalColor")
+                    oldBlockPosition.setAttribute("status", "open")
+                }
+                newBlockPosition.style.backgroundColor = "white"
+                newBlockPosition.setAttribute("status", "user")
+            }
+            else if (newBlockPosition.getAttribute("border") == "top" && direction == -40) {
+                clearInterval(moveUserInterval)
+                currentlyMoving = false
+            }
+            else if (newBlockPosition.getAttribute("border") == "bottom" && direction == 40) {
+                clearInterval(moveUserInterval)
+                currentlyMoving = false
+            }
+            else if (newBlockPosition.getAttribute("border") == "left" && direction == -1) {
+                clearInterval(moveUserInterval)
+                currentlyMoving = false
+            }
+            else if (newBlockPosition.getAttribute("border") == "right" && direction == 1) {
+                clearInterval(moveUserInterval)
+                currentlyMoving = false
+            }
+            else if (newBlockPosition.getAttribute("status") == "wall") {
+                clearInterval(moveUserInterval)
+                currentlyMoving = false
+            }
+            else if (newBlockPosition.getAttribute("status") == "caveEntrance") {
+                clearInterval(moveUserInterval)
+                currentlyMoving = false
+                loadCave(currentLevel)
+            }
+            else if (newBlockPosition.getAttribute("status") == "caveExit1") {
+                clearInterval(moveUserInterval)
+                currentlyMoving = false
+                for (x in listOfTiles) {
+                    var reset = document.getElementById(listOfTiles[x])
+                    if (reset.getAttribute("border") == "none") {
+                        reset.style.backgroundColor = reset.getAttribute("originalColor")
+                        reset.setAttribute("status", "open")
+                    }
+                }
+                loadLevel(currentLevel)
+                var userCell = document.getElementById(986)
+                userCell.style.backgroundColor = "white"
+                userCellId = 986
+                userCell.setAttribute("status", "user")
+                var deleteOlduserCell = document.getElementById(1043)
+                deleteOlduserCell.style.backgroundColor = deleteOlduserCell.getAttribute("originalColor")
+                deleteOlduserCell.setAttribute("status", "open")
+            }
+            else if (newBlockPosition.getAttribute("status") == "fire") {
+                clearInterval(moveUserInterval)
+                currentlyMoving = false
+                for (x in listOfTiles) {
+                    var reset = document.getElementById(listOfTiles[x])
+                    if (reset.getAttribute("border") == "none") {
+                        reset.style.backgroundColor = reset.getAttribute("originalColor")
+                        reset.setAttribute("status", "open")
+                    }
+                }
+                var updateCoin = document.getElementById("coinSlot")
+                updateCoin.style.visibility = "hidden"
+                coinNumber = 0
+                var inventoryForCoin = document.getElementById("coinSlot")
+                inventoryForCoin.textContent = "temp"
+                inventoryForCoin.style.color = "E3ECE8"
+                if (saveCell != 0) {
+                    currentLevel = saveCell
+                    loadCave(currentLevel)
+                    var deleteSaveCell = document.getElementById(580)
+                    deleteSaveCell.style.backgroundColor = deleteSaveCell.getAttribute("originalColor")
+                    deleteSaveCell.setAttribute("status", "open")
+                }
+                else {
+                    currentLevel = 1
+                    loadLevel(currentLevel)
+                }
+            }
+            else if (newBlockPosition.getAttribute("status") == "exit") {
+                clearInterval(moveUserInterval)
+                currentlyMoving = false
+                currentLevel++
+                //console.log("current level: " + currentLevel)
+                for (x in listOfTiles) {
+                    var reset = document.getElementById(listOfTiles[x])
+                    if (reset.getAttribute("border") == "none") {
+                        reset.style.backgroundColor = reset.getAttribute("originalColor")
+                        reset.setAttribute("status", "open")
+                        loadLevel(currentLevel)
+                    }
+                }
+            }
+            else {
+                userCellId = userCellId + direction
+                if (oldBlockPosition.getAttribute("status") != "teleporterExit" && oldBlockPosition.getAttribute("status") != "teleporterEntrance") {
+                    oldBlockPosition.style.backgroundColor = oldBlockPosition.getAttribute("originalColor")
+                    oldBlockPosition.setAttribute("status", "open")
+                }
+                newBlockPosition.style.backgroundColor = "white"
+                newBlockPosition.setAttribute("status", "user")
+            }
+        }, 20);
+    }
+
+    onkeyup = function () {
+        for (x in listOfTiles) {
+            var selectedCell = document.getElementById(listOfTiles[x])
+            if (selectedCell.getAttribute("wallStatus") == "decayed") {
+                selectedCell.setAttribute("wallStatus", "deleted")
+                selectedCell.setAttribute("status", "open")
+                selectedCell.style.backgroundColor = "EEBE8B"
+            }
+            if (selectedCell.getAttribute("wallStatus") == ("placed")) {
+                selectedCell.setAttribute("wallStatus", "decayed")
+            }
+        }
+        if (currentlyMoving == false) {
+            var pressedKey = event.keyCode
+            if (pressedKey == 40) {
+                //console.log("down")
+                moveUser(40)
+            }
+            if (pressedKey == 37) {
+                // console.log("left")
+                moveUser(-1)
+            }
+            if (pressedKey == 39) {
+                //console.log("right")
+                moveUser(1)
+            }
+            if (pressedKey == 38) {
+                // console.log("up")
+                moveUser(-40)
+            }
+        }
+    }
+
+
+
+
+</script>
+
+
+</html>
