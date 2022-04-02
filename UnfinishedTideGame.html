@@ -1,0 +1,269 @@
+<html>
+
+<div id="div1"></div>
+<script>
+    var random11 = Math.random() * (2500 - 500) + 500;
+    var random22 = Math.random() * (2500 - 500) + 500;
+    var random33 = Math.random() * (2500 - 500) + 500;
+    var score = 0
+    var start = 1
+    var sandPickedUp = false
+    var base
+    var map = document.createElement("table")
+    div1.appendChild(map)
+    var totalTileCount = 0
+    var listOfTiles = []
+    document.oncontextmenu = function () {
+        return false;
+    }
+    function makeTileButton() {
+        totalTileCount++
+        var tile = document.createElement("td")
+        tile.setAttribute("status", "normal")
+        tile.id = (totalTileCount)
+        tile.style.width = "14px"
+        tile.style.height = "14px"
+        tile.style.fontSize = "8px"
+        tile.setAttribute("height", 0)
+        //tile.textContent = totalTileCount
+        var pickColor = Math.round(Math.random(0, 1))
+        if (pickColor == 0) {
+            tile.style.backgroundColor = "#EAEB65"
+            tile.setAttribute("originalColor", "#EAEB65")
+        }
+        else {
+            tile.style.backgroundColor = "F1F285"
+            tile.setAttribute("originalColor", "F1F285")
+        }
+        row.appendChild(tile)
+        tile.onclick = function () {
+            if (start == 1) {
+                start = 2
+                for (var x = 1; x < 2000; x++) {
+                    var ok = document.getElementById(x)
+                    if (ok.style.backgroundColor == "black") {
+                        ok.style.backgroundColor = ok.getAttribute("originalColor")
+                    }
+                }
+                //placeMines()
+                startWave()
+                var randomBase = Math.random() * (2500 - 500) + 500;
+                var ork = document.getElementById(parseInt(randomBase))
+                ork.style.backgroundColor = "red"
+                base = parseInt(randomBase)
+            }
+            // else if (start == 0) {
+            //    start = 2
+            //    tile.style.backgroundColor = "red"
+            //    base = tile.id
+            //console.log(base)
+            // }
+            else if (start == 2) {
+                if (sandPickedUp == false) {
+                    sandPickedUp = true
+                    var height = tile.getAttribute("height")
+                    if (height < 1) {
+                        //sand--
+                        height++
+                        tile.setAttribute("height", height)
+                        updateColor(tile.id)
+                    }
+                }
+            }
+        }
+        tile.oncontextmenu = function () {
+            if (sandPickedUp == true) {
+                sandPickedUp = false
+                var height = tile.getAttribute("height")
+                if (height > -1 && tile.style.backgroundColor != "red" && tile.style.backgroundColor != "AEBF00") {
+                    height--
+                    tile.setAttribute("height", height)
+                    updateColor(tile.id)
+                }
+            }
+        }
+    }
+    for (var x = 1; x <= 50; x++) {
+        var row = document.createElement("tr")
+        map.appendChild(row)
+        for (var y = 1; y <= 50; y++) {
+            makeTileButton()
+        }
+    }
+    loadTitle()
+    function loadTitle() {
+        var tileList = [679, 729, 779, 829, 879, 929, 980, 981, 982, 932, 882, 832, 831, 631, 630, 632, 734, 785, 784, 834, 884, 934, 984, 986, 936, 886, 836, 786, 736, 686, 635, 684, 689, 638, 688, 738, 788, 838, 888, 938, 988, 691, 740, 790, 840, 890, 940, 990, 642, 692, 742, 792, 842, 892, 942, 992, 645, 646, 647, 795, 796, 797, 794, 744, 694, 644, 997, 996, 995, 994, 944, 894, 844, 620, 621, 622, 770, 771, 772, 970, 971, 972, 619, 669, 719, 769, 819, 869, 919, 969, 615, 616, 667, 717, 767, 817, 867, 917, 966, 965, 614, 664, 714, 764, 814, 864, 914, 964, 612, 662, 712, 762, 812, 862, 912, 962, 604, 605, 606, 607, 608, 609, 610, 657, 707, 757, 807, 857, 907, 957]
+        for (x in tileList) {
+            var selectedTile = document.getElementById(tileList[x])
+            selectedTile.style.backgroundColor = "black"
+        }
+    }
+    function updateColor(tile) {
+        var ok = document.getElementById(tile)
+        var height = ok.getAttribute("height")
+        if (height == -1) {
+            ok.style.width = "4px"
+            ok.style.borderStyle = "inset"
+            ok.style.backgroundColor = "737414"
+            ok.style.borderColor = "737414"
+            ok.setAttribute("status", "dug")
+
+            updateSand()
+        }
+        else if (height == 0) {
+            ok.style.borderStyle = "none"
+            ok.style.backgroundColor = ok.getAttribute("originalColor")
+            ok.setAttribute("status", "normal")
+            for (var x = parseInt(tile) + 50; x < 2000; x = x + 50) {
+                var w = document.getElementById(x)
+                if (w.getAttribute("status") == "wall") {
+                    break
+                }
+                else {
+                    w.setAttribute("status", "normal")
+                }
+            }
+        }
+        else if (height == 1) {
+            ok.style.width = "4px"
+            ok.style.borderStyle = "inset"
+            ok.style.backgroundColor = "CFD03F"
+            ok.style.borderColor = "CFD03F"
+            ok.setAttribute("status", "wall")
+            updateSand()
+            for (var x = parseInt(tile) + 50; x < 2000; x = x + 50) {
+                var ok = document.getElementById(x)
+                ok.setAttribute("status", "protected")
+                // ok.style.backgroundColor = "green"
+            }
+        }
+    }
+    var waveSpeed = 0
+    var waveDifficulty = 0
+    var advance = true
+    var recede = false
+    var count = 0
+    function startWave() {
+        var advanceTimer = setInterval(() => {
+            if (count < (300 + waveDifficulty) && advance == true) {
+                if (waveDifficulty == 2100) {
+                    waveDifficulty = 0
+                    waveSpeed = 0
+                }
+                for (var x = 1; x <= 50; x++) {
+                    var ok = document.getElementById(x + count)
+                    if (ok.getAttribute("status") == "normal" || ok.getAttribute("status") == "mine") {
+                        var pickColor = Math.round(Math.random(0, 1))
+                        // if (ok.getAttribute("minestatus") == "mine") {
+                        //    ok.setAttribute("minestatus", "no")
+                        // }
+                        if (pickColor == 0) {
+                            ok.style.backgroundColor = "#9CC1F3"
+                            ok.setAttribute("height", 0)
+                        }
+                        else {
+                            ok.style.backgroundColor = "lightblue"
+                            ok.setAttribute("height", 0)
+                        }
+                    }
+                    else if (ok.getAttribute("status") == "wall") {
+                        ok.style.backgroundColor = ok.getAttribute("originalColor")
+                        ok.style.borderStyle = "none"
+                        ok.setAttribute("status", "makeNormal")
+                        ok.setAttribute("height", 0)
+
+                    }
+                }
+                count = count + 50
+            }
+            else if (count >= (300 + waveDifficulty) || recede == true) {
+                waveSpeed = waveSpeed + 2
+                clearInterval(advanceTimer)
+                startRecede()
+            }
+        }, 80);
+    }
+    function startRecede() {
+        var recedeTimer = setInterval(() => {
+            if (count >= (300 + waveDifficulty) || recede == true) {
+                clearInterval(recedeTimer)
+                startWave()
+                recede = true
+                advance = false
+                for (var x = 0; x < 50; x++) {
+                    var ok = document.getElementById(count - x)
+                    if (ok.getAttribute("status") == "normal") {
+                        ok.style.backgroundColor = ok.getAttribute("originalColor")
+                    }
+                    else if (ok.getAttribute("status") == "makeNormal") {
+                        ok.setAttribute("status", "normal")
+                        for (var n = parseInt(ok.id) + 50; n < 2000; n = n + 50) {
+                            var wow = document.getElementById(n)
+                            if (wow.style.borderStyle == "inset") {
+                                wow.setAttribute("status", "wall")
+                                wow.setAttribute("height", 1)
+                                break
+                            }
+                            else {
+                                wow.setAttribute("status", "normal")
+                                wow.setAttribute("height", 0)
+                            }
+                        }
+                    }
+                }
+                count = count - 50
+                if (count == 0) {
+                    //checkMines()
+                    updateSand()
+                    recede = false
+                    advance = true
+
+                    waveDifficulty = waveDifficulty + 100
+                    var ok = document.getElementById(base)
+                    if (ok.style.backgroundColor != "red") {
+                        document.write("You lose!")
+                    }
+                }
+            }
+        }, 870 - waveSpeed);
+    }
+    //function placeMines() {
+    //   var sandMine = document.getElementById((parseInt(random11)))
+    //   sandMine.style.backgroundColor = "AEBF00"
+    //   sandMine.setAttribute("status", "mine")
+    //   sandMine.setAttribute("minestatus", "mine")
+    //   var sandMine = document.getElementById((parseInt(random22)))
+    //   sandMine.style.backgroundColor = "AEBF00"
+    //    sandMine.setAttribute("status", "mine")
+    //   sandMine.setAttribute("minestatus", "mine")
+    //    var sandMine = document.getElementById((parseInt(random33)))
+    //    sandMine.style.backgroundColor = "AEBF00"
+    //   sandMine.setAttribute("status", "mine")
+    //  sandMine.setAttribute("minestatus", "mine")
+    //   var ok = document.getElementById("textBox")
+    //   ok.style.visibility = "visible"
+    //}
+    var textBox = document.createElement("textArea")
+    textBox.id = "textBox"
+    textBox.textContent = "Score: " + score
+    textBox.style.visibility = "hidden"
+    div1.appendChild(textBox)
+    function updateSand() {
+        var ok = document.getElementById("textBox")
+        ok.textContent = "Score: " + score
+    }
+    //function checkMines() {
+    //    for (var x = 1; x < 2000; x++) {
+    //        var ok = document.getElementById(x)
+     //       if (ok.getAttribute("minestatus") == "mine") {
+    //            score++
+    //        }
+    //    }
+    //    if (score >= 100) {
+    //        console.log("ok now what")
+    //    }
+    //}
+</script>
+
+
+</html>
