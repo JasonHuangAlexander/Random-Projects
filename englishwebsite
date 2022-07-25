@@ -1,0 +1,50 @@
+<div1 id="div1"></div1>
+
+<script>
+
+    var exercise1Score = 0//exercize 1 button
+    var exercise1Button = document.createElement("button")
+    exercise1Button.style.width = 100
+    exercise1Button.style.height = 100
+    exercise1Button.textContent = "Exercise 1"
+    exercise1Button.onclick = function () {
+        if (exercise1Score < 8) {
+            exercise1Score=0
+            exercise1()
+            if (exercise1Score >= 8) {
+                exercise1Button.style.backgroundColor = "lightgreen"
+            }
+            else {
+                exercise1Button.style.backgroundColor = "pink"
+            }
+            exercise1Button.textContent = (exercise1Score + "/10")
+        }
+    }
+    div1.append(exercise1Button)
+
+    var infoBox = document.createElement("label") //info box area
+    infoBox.id = "infoBox"
+    infoBox.style.width = 100
+    infoBox.style.height = 100
+    infoBox.disabled = true
+    infoBox.textContent = "Enter 'quit' to exit a quiz"
+    div1.append(infoBox)
+
+
+
+
+    function exercise1() { //exercize 1 function
+        var questionAnswerList = [["1+1", "2"], ["3*3", "9"], ["2-2", "0"], ["10-1", "9"], ["2+3", "5"], ["3+3", "6"], ["10-3", "7"], ["16/2", "8"], ["1+8", "9"], ["100/10", "10"],]
+        var infoBox = document.getElementById("infoBox")
+        for (var x = 0; x < 10; x++) {
+            var randomNumber = Math.floor(Math.random() * 10)
+            var answer = prompt(questionAnswerList[randomNumber][0])
+            if (answer == "quit") {
+                break
+            }
+            if (answer == questionAnswerList[randomNumber][1]) {
+                exercise1Score++
+            }
+        }
+    }
+</script>
