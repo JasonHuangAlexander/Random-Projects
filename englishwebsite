@@ -15,21 +15,26 @@
       }
       else{
       	button.textContent = ("Practice " + button.id) //sets button text content, uses button ID
+        button.setAttribute("exerciseScore",0)
       }
       columnTile.append(button)
       button.onclick=function(){ //ONCLICK
-      	
-        if (exercise1Score < 8) {
-          exercise1Score=0
-          exercise1()
-          if (exercise1Score >= 8) {
-          	exercise1Button.style.backgroundColor = "lightgreen"
+        if (button.getAttribute("exerciseScore") < 8) {
+          button.setAttribute("exerciseScore",0)
+          
+          for (var x = 1;x<=25;x++){ //select which practice to do
+          	if ((button.id==x)&&(button.id!=13)){
+            	exercise(x)
+            }
+          }
+    
+          if (button.getAttribute("exerciseScore") >= 8) {
+          	button.style.backgroundColor = "lightgreen"
           }
           else {
-            exercise1Button.style.backgroundColor = "pink"
+            button.style.backgroundColor = "pink"
           }
-          exercise1Button.textContent = (exercise1Score + "/10")
-        
+          button.textContent = (button.getAttribute("exerciseScore") + "/10")
     }
         console.log(button.textContent) //Currently logs TEXT CONTENT of button, NOT ID
       }
@@ -44,31 +49,13 @@
       	makeTile()
       }
     }
-
-
-    var exercise1Score = 0//exercize 1 button
-    var exercise1Button = document.createElement("button")
-    exercise1Button.style.width = 100
-    exercise1Button.style.height = 100
-    exercise1Button.textContent = "Exercise 1"
-    exercise1Button.onclick = function () {
-        if (exercise1Score < 8) {
-            exercise1Score=0
-            exercise1()
-            if (exercise1Score >= 8) {
-                exercise1Button.style.backgroundColor = "lightgreen"
-            }
-            else {
-                exercise1Button.style.backgroundColor = "pink"
-            }
-            exercise1Button.textContent = (exercise1Score + "/10")
-        }
-    }
-    div1.append(exercise1Button)
-
-
-    function exercise1() { //exercize 1 function
-        var questionAnswerList = [["1+1", "2"], ["3*3", "9"], ["2-2", "0"], ["10-1", "9"], ["2+3", "5"], ["3+3", "6"], ["10-3", "7"], ["16/2", "8"], ["1+8", "9"], ["100/10", "10"],]
+    function exercise(buttonId) { //exercize 1 function
+    		if (buttonId==1){
+        	var questionAnswerList = [["1+1", "2"], ["3*3", "9"], ["2-2", "0"], ["10-1", "9"], ["2+3", "5"], ["3+3", "6"], ["10-3", "7"], ["16/2", "8"], ["1+8", "9"], ["100/10", "10"],]
+        }  
+        if (buttonId==2){
+        	var questionAnswerList = [["yes", "yes"], ["no", "no"], ["how was your day", "good"], ["ok?", "ok"], ["right", "wrong"], ["left", "right"], ["riungeiga", "what"], ["sorry", "no problem"], ["why", "not"], ["bye", "bye"],]
+        }  
         for (var x = 0; x < 10; x++) {
             var randomNumber = Math.floor(Math.random() * 10)
             var answer = prompt(questionAnswerList[randomNumber][0])
@@ -76,7 +63,10 @@
                 break
             }
             if (answer == questionAnswerList[randomNumber][1]) {
-                exercise1Score++
+            		var button = document.getElementById(buttonId)
+                var x = button.getAttribute("exerciseScore")
+                x++
+                button.setAttribute("exerciseScore",x)
             }
         }
     }
