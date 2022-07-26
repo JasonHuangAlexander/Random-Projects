@@ -1,347 +1,619 @@
 <div1 id="div1"></div1>
 
 <script>
+  //POTENTIAL ADDITIONS:
+  //Add an option to show what questions you got wrong, and then study them
 
-    //POTENTIAL ADDITIONS:
-    //Add an option to show what questions you got wrong, and then study them
-   
-    
-		var incorrectList = []
-		function makeTile(){
-    	totalTileCount++
-      var columnTile = document.createElement("td")
-      div1.append(columnTile)
-      var button = document.createElement("button")
-      button.id=(totalTileCount)
-      button.style.width="100px"
-      button.style.height="100px"
-      button.textContent=button.id
-      if (button.id==13){
-      	button.textContent=(incorrectList.length + " corrections")
-        button.style.backgroundColor="lightyellow"
-        button.style.fontSize = "12px"
-      }
-      else{
-      	button.textContent = ("Practice " + button.id) //sets button text content, uses button ID
-        button.setAttribute("exerciseScore",0)
-      }
-      columnTile.append(button)
-      button.onclick=function(){ //ONCLICK
-      	if(button.id!=13){
-        	if (button.getAttribute("exerciseScore") < 8) {
-          	button.setAttribute("exerciseScore",0)
-          	for (var x = 1;x<=25;x++){ //select which practice to do
-          		if ((button.id==x)&&(button.id!=13)){
-            		exercise(x)
-            	}
-          	}
-         		if (button.getAttribute("exerciseScore") >= 8) {
-          		button.style.backgroundColor = "lightgreen"
-            	checkbingo(button.id) //check rows for bingo FUNCTION CALL
-          	}
-          	else {
-            	button.style.backgroundColor = "pink"
-          	}
-          	button.textContent = (button.getAttribute("exerciseScore") + "/10")
-    			}
+
+  var incorrectList = []
+
+  function makeTile() {
+    totalTileCount++
+    var columnTile = document.createElement("td")
+    div1.append(columnTile)
+    var button = document.createElement("button")
+    button.id = (totalTileCount)
+    button.style.width = "100px"
+    button.style.height = "100px"
+    button.textContent = button.id
+    if (button.id == 13) {
+      button.textContent = (incorrectList.length + " corrections")
+      button.style.backgroundColor = "white"
+      button.style.fontSize = "12px"
+    } else {
+      button.textContent = ("Practice " + button.id) //sets button text content, uses button ID
+      button.setAttribute("exerciseScore", 0)
+    }
+    columnTile.append(button)
+    button.onclick = function() { //ONCLICK
+      if (button.id != 13) {
+        if (button.getAttribute("exerciseScore") < 8) {
+          button.setAttribute("exerciseScore", 0)
+          for (var x = 1; x <= 25; x++) { //select which practice to do
+            if ((button.id == x) && (button.id != 13)) {
+              exercise(x)
+            }
+          }
+          if (button.getAttribute("exerciseScore") >= 8) {
+            button.style.backgroundColor = "lightgreen"
+            checkbingo(button.id) //check rows for bingo FUNCTION CALL
+          } else {
+            button.style.backgroundColor = "pink"
+          }
+          button.textContent = (button.getAttribute("exerciseScore") + "/10")
+        }
         console.log(button.textContent) //Currently logs TEXT CONTENT of button, NOT ID
-      	}
+      }
+      else (if button.id==13){
+      	var updatedIncorrectList = []
+      	for (x in incorrectList){
+        	var question = prompt(incorrectList[x][0])
+          if (question!=incorrectList[x][1])
+          updatedIncorrectList.push(incorrectList[x])
         }
-         
-    }
-		var totalRowCount = 0
-		var totalTileCount = 0
-		for (var x = 0;x<5;x++){
-    	totalRowCount++
-    	var rowTile = document.createElement("tr")
-    	div1.append(rowTile)
-    	for (var y = 0;y<5;y++){
-      	makeTile()
+        button.textcontent = (incorrectList.length + " corrections")
+        if (incorrectList.length==0){
+        	button.style.backgroundColor = "white"
+        }
       }
     }
-    function exercise(buttonId) { //exercize 1 function
-    		if (buttonId==1){
-        	var questionAnswerList = [["My favorite recipes involve chocolate ___________ for instance, I love chocolate chip cookies, chocolate sauce, and chocolate cake.\n\n\nA: :\n\nB: ;\n\nC: '", "B"], ["3*3", "9"], ["2-2", "0"], ["10-1", "9"], ["2+3", "5"], ["3+3", "6"], ["10-3", "7"], ["16/2", "8"], ["1+8", "9"], ["100/10", "10"],]
-        }  
-        if (buttonId==2){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==3){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==4){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==5){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==6){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==7){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==8){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==9){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==10){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==11){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==12){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==14){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==15){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==16){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==17){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==18){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==19){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==20){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==21){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==22){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==23){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==24){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        if (buttonId==25){
-        	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
-        }  
-        for (var x = 0; x < 10; x++) {
-            //var randomNumber = Math.floor(Math.random() * 10)
-            var answer = prompt(questionAnswerList[x][0])
-            if (answer == "quit") {
-                break
-            }
-            if (answer=="givepoint"){
-            		var button = document.getElementById(buttonId)
-                button.setAttribute("exerciseScore",10)
-            }
-            if (answer == questionAnswerList[x][1]) {
-            		var button = document.getElementById(buttonId)               
-                button.setAttribute("exerciseScore",(parseInt(button.getAttribute("exerciseScore"))+1))
-            }
-            else{
-            	incorrectList.push(questionAnswerList[x][0])
-              var midTile = document.getElementById(13)
-              midTile.textContent = (incorrectList.length +" corrections")
-              midTile.style.backgroundColor = "lightyellow"
-            }
-        }
+
+  }
+  var totalRowCount = 0
+  var totalTileCount = 0
+  for (var x = 0; x < 5; x++) {
+    totalRowCount++
+    var rowTile = document.createElement("tr")
+    div1.append(rowTile)
+    for (var y = 0; y < 5; y++) {
+      makeTile()
     }
-    
-    function checkbingo(){ //check rows for bingo FUNCTION
-    	console.log("OK")
-      //only the big x are the only viable diagonal wins
-      var diagonalTileList1 = [1,7,19,25]
-      var diagonalCheck1 = true
-      for (x in diagonalTileList1){
-      	var button = document.getElementById(diagonalTileList1[x])
-      	if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
-        	diagonalCheck1 = false
-        }
-      }
-      if (diagonalCheck1 == true){
-      	for (x in diagonalTileList1){
-        	var button = document.getElementById(diagonalTileList1[x])
-          button.style.backgroundColor="green"
-        }
-      }
-      
-      var diagonalTileList2 = [5,9,17,21]
-      var diagonalCheck2 = true
-      for (x in diagonalTileList2){
-      	var button = document.getElementById(diagonalTileList2[x])
-      	if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
-        	diagonalCheck2 = false
-        }
-      }
-      if (diagonalCheck2 == true){
-      	for (x in diagonalTileList2){
-        	var button = document.getElementById(diagonalTileList2[x])
-          button.style.backgroundColor="green"
-        }
-      }
-      
-      //horizontal checks
-      var horizontalTileList1 = [1,2,3,4,5]
-      var horizontalCheck1 = true
-      for (x in horizontalTileList1){
-      	var button = document.getElementById(horizontalTileList1[x])
-        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
-        	horizontalCheck1 = false
-        }
-      }
-      if (horizontalCheck1==true){
-      	for (x in horizontalTileList1){
-        	var button = document.getElementById(horizontalTileList1[x])
-          button.style.backgroundColor="green"
-        }
-			}
-      
-      var horizontalTileList2 = [6,7,8,9,10]
-      var horizontalCheck2 = true
-      for (x in horizontalTileList2){
-      	var button = document.getElementById(horizontalTileList2[x])
-        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
-        	horizontalCheck2 = false
-        }
-      }
-      if (horizontalCheck2==true){
-      	for (x in horizontalTileList2){
-        	var button = document.getElementById(horizontalTileList2[x])
-          button.style.backgroundColor="green"
-        }
-			}
-      
-      var horizontalTileList3= [11,12,14,15]
-      var horizontalCheck3 = true
-      for (x in horizontalTileList3){
-      	var button = document.getElementById(horizontalTileList3[x])
-        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
-        	horizontalCheck3 = false
-        }
-      }
-      if (horizontalCheck3==true){
-      	for (x in horizontalTileList3){
-        	var button = document.getElementById(horizontalTileList3[x])
-          button.style.backgroundColor="green"
-        }
-			}
-      
-      var horizontalTileList4 = [16,17,18,19,20]
-      var horizontalCheck4 = true
-      for (x in horizontalTileList4){
-      	var button = document.getElementById(horizontalTileList4[x])
-        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
-        	horizontalCheck4 = false
-        }
-      }
-      if (horizontalCheck4==true){
-      	for (x in horizontalTileList4){
-        	var button = document.getElementById(horizontalTileList4[x])
-          button.style.backgroundColor="green"
-        }
-			}
-      
-      var horizontalTileList5 = [21,22,23,24,25]
-      var horizontalCheck5 = true
-      for (x in horizontalTileList5){
-      	var button = document.getElementById(horizontalTileList5[x])
-       	if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
-        	horizontalCheck5 = false
-        }
-      }
-      if (horizontalCheck5==true){
-      	for (x in horizontalTileList5){
-        	var button = document.getElementById(horizontalTileList5[x])
-          button.style.backgroundColor="green"
-        }
-			}
-      
-      //vertical checks
-      var verticalTileList1 = [1,6,11,16,21]
-      var verticalCheck1 = true
-      for (x in verticalTileList1){
-      	var button = document.getElementById(verticalTileList1[x])
-        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
-        	verticalCheck1 = false
-        }
-      }
-      if (verticalCheck1==true){
-      	for (x in verticalTileList1){
-        	var button = document.getElementById(verticalTileList1[x])
-          button.style.backgroundColor="green"
-        }
-      }
-      
-      var verticalTileList2 = [2,7,12,17,22]
-      var verticalCheck2 = true
-      for (x in verticalTileList2){
-      	var button = document.getElementById(verticalTileList2[x])
-        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
-        	verticalCheck2 = false
-        }
-      }
-      if (verticalCheck2==true){
-      	for (x in verticalTileList2){
-        	var button = document.getElementById(verticalTileList2[x])
-          button.style.backgroundColor="green"
-        }
-      }
-      
-      var verticalTileList3 = [3,8,18,23]
-      var verticalCheck3 = true
-      for (x in verticalTileList3){
-      	var button = document.getElementById(verticalTileList3[x])
-        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
-        	verticalCheck3 = false
-        }
-      }
-      if (verticalCheck3==true){
-      	for (x in verticalTileList3){
-        	var button = document.getElementById(verticalTileList3[x])
-          button.style.backgroundColor="green"
-        }
-      }
-      
-      var verticalTileList4 = [4,9,14,19,24]
-      var verticalCheck4 = true
-      for (x in verticalTileList4){
-      	var button = document.getElementById(verticalTileList4[x])
-        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
-        	verticalCheck4  = false
-        }
-      }
-      if (verticalCheck4==true){
-      	for (x in verticalTileList4){
-        	var button = document.getElementById(verticalTileList4[x])
-          button.style.backgroundColor="green"
-        }
-      }
-      
-      var verticalTileList5 = [5,10,15,20,25]
-      var verticalCheck5 = true
-      for (x in verticalTileList5){
-      	var button = document.getElementById(verticalTileList5[x])
-        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
-        	verticalCheck5 = false
-        }
-      }
-      if (verticalCheck5==true){
-      	for (x in verticalTileList5){
-        	var button = document.getElementById(verticalTileList5[x])
-          button.style.backgroundColor="green"
-        }
-      }
-   
+  }
+
+  function exercise(buttonId) { //exercize 1 function
+    if (buttonId == 1) {
+      var questionAnswerList = [
+        ["My favorite recipes involve chocolate ___________ for instance, I love chocolate chip cookies, chocolate sauce, and chocolate cake.\n\n\nA: :\n\nB: ;\n\nC: '", "B"],
+        ["3*3", "9"],
+        ["2-2", "0"],
+        ["10-1", "9"],
+        ["2+3", "5"],
+        ["3+3", "6"],
+        ["10-3", "7"],
+        ["16/2", "8"],
+        ["1+8", "9"],
+        ["100/10", "10"],
+      ]
     }
-   
-    
-    
+    if (buttonId == 2) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 3) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 4) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 5) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 6) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 7) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 8) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 9) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 10) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 11) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 12) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 14) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 15) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 16) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 17) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 18) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 19) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 20) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 21) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 22) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 23) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 24) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    if (buttonId == 25) {
+      var questionAnswerList = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+        ["9", "9"],
+        ["10", "10"],
+      ]
+    }
+    for (var x = 0; x < 10; x++) {
+      //var randomNumber = Math.floor(Math.random() * 10)
+      var answer = prompt(questionAnswerList[x][0])
+      if (answer == "quit") {
+        break
+      }
+      if (answer == "givepoint") {
+        var button = document.getElementById(buttonId)
+        button.setAttribute("exerciseScore", 10)
+      }
+      if (answer == questionAnswerList[x][1]) {
+        var button = document.getElementById(buttonId)
+        button.setAttribute("exerciseScore", (parseInt(button.getAttribute("exerciseScore")) + 1))
+      } else {
+        incorrectList.push(questionAnswerList[x][0])
+        var midTile = document.getElementById(13)
+        midTile.textContent = (incorrectList.length + " corrections")
+        midTile.style.backgroundColor = "lightyellow"
+      }
+    }
+  }
+
+  function checkbingo() { //check rows for bingo FUNCTION
+    console.log("OK")
+    //only the big x are the only viable diagonal wins
+    var diagonalTileList1 = [1, 7, 19, 25]
+    var diagonalCheck1 = true
+    for (x in diagonalTileList1) {
+      var button = document.getElementById(diagonalTileList1[x])
+      if ((button.style.backgroundColor != "lightgreen") && (button.style.backgroundColor != "green")) {
+        diagonalCheck1 = false
+      }
+    }
+    if (diagonalCheck1 == true) {
+      for (x in diagonalTileList1) {
+        var button = document.getElementById(diagonalTileList1[x])
+        button.style.backgroundColor = "green"
+      }
+    }
+
+    var diagonalTileList2 = [5, 9, 17, 21]
+    var diagonalCheck2 = true
+    for (x in diagonalTileList2) {
+      var button = document.getElementById(diagonalTileList2[x])
+      if ((button.style.backgroundColor != "lightgreen") && (button.style.backgroundColor != "green")) {
+        diagonalCheck2 = false
+      }
+    }
+    if (diagonalCheck2 == true) {
+      for (x in diagonalTileList2) {
+        var button = document.getElementById(diagonalTileList2[x])
+        button.style.backgroundColor = "green"
+      }
+    }
+
+    //horizontal checks
+    var horizontalTileList1 = [1, 2, 3, 4, 5]
+    var horizontalCheck1 = true
+    for (x in horizontalTileList1) {
+      var button = document.getElementById(horizontalTileList1[x])
+      if ((button.style.backgroundColor != "lightgreen") && (button.style.backgroundColor != "green")) {
+        horizontalCheck1 = false
+      }
+    }
+    if (horizontalCheck1 == true) {
+      for (x in horizontalTileList1) {
+        var button = document.getElementById(horizontalTileList1[x])
+        button.style.backgroundColor = "green"
+      }
+    }
+
+    var horizontalTileList2 = [6, 7, 8, 9, 10]
+    var horizontalCheck2 = true
+    for (x in horizontalTileList2) {
+      var button = document.getElementById(horizontalTileList2[x])
+      if ((button.style.backgroundColor != "lightgreen") && (button.style.backgroundColor != "green")) {
+        horizontalCheck2 = false
+      }
+    }
+    if (horizontalCheck2 == true) {
+      for (x in horizontalTileList2) {
+        var button = document.getElementById(horizontalTileList2[x])
+        button.style.backgroundColor = "green"
+      }
+    }
+
+    var horizontalTileList3 = [11, 12, 14, 15]
+    var horizontalCheck3 = true
+    for (x in horizontalTileList3) {
+      var button = document.getElementById(horizontalTileList3[x])
+      if ((button.style.backgroundColor != "lightgreen") && (button.style.backgroundColor != "green")) {
+        horizontalCheck3 = false
+      }
+    }
+    if (horizontalCheck3 == true) {
+      for (x in horizontalTileList3) {
+        var button = document.getElementById(horizontalTileList3[x])
+        button.style.backgroundColor = "green"
+      }
+    }
+
+    var horizontalTileList4 = [16, 17, 18, 19, 20]
+    var horizontalCheck4 = true
+    for (x in horizontalTileList4) {
+      var button = document.getElementById(horizontalTileList4[x])
+      if ((button.style.backgroundColor != "lightgreen") && (button.style.backgroundColor != "green")) {
+        horizontalCheck4 = false
+      }
+    }
+    if (horizontalCheck4 == true) {
+      for (x in horizontalTileList4) {
+        var button = document.getElementById(horizontalTileList4[x])
+        button.style.backgroundColor = "green"
+      }
+    }
+
+    var horizontalTileList5 = [21, 22, 23, 24, 25]
+    var horizontalCheck5 = true
+    for (x in horizontalTileList5) {
+      var button = document.getElementById(horizontalTileList5[x])
+      if ((button.style.backgroundColor != "lightgreen") && (button.style.backgroundColor != "green")) {
+        horizontalCheck5 = false
+      }
+    }
+    if (horizontalCheck5 == true) {
+      for (x in horizontalTileList5) {
+        var button = document.getElementById(horizontalTileList5[x])
+        button.style.backgroundColor = "green"
+      }
+    }
+
+    //vertical checks
+    var verticalTileList1 = [1, 6, 11, 16, 21]
+    var verticalCheck1 = true
+    for (x in verticalTileList1) {
+      var button = document.getElementById(verticalTileList1[x])
+      if ((button.style.backgroundColor != "lightgreen") && (button.style.backgroundColor != "green")) {
+        verticalCheck1 = false
+      }
+    }
+    if (verticalCheck1 == true) {
+      for (x in verticalTileList1) {
+        var button = document.getElementById(verticalTileList1[x])
+        button.style.backgroundColor = "green"
+      }
+    }
+
+    var verticalTileList2 = [2, 7, 12, 17, 22]
+    var verticalCheck2 = true
+    for (x in verticalTileList2) {
+      var button = document.getElementById(verticalTileList2[x])
+      if ((button.style.backgroundColor != "lightgreen") && (button.style.backgroundColor != "green")) {
+        verticalCheck2 = false
+      }
+    }
+    if (verticalCheck2 == true) {
+      for (x in verticalTileList2) {
+        var button = document.getElementById(verticalTileList2[x])
+        button.style.backgroundColor = "green"
+      }
+    }
+
+    var verticalTileList3 = [3, 8, 18, 23]
+    var verticalCheck3 = true
+    for (x in verticalTileList3) {
+      var button = document.getElementById(verticalTileList3[x])
+      if ((button.style.backgroundColor != "lightgreen") && (button.style.backgroundColor != "green")) {
+        verticalCheck3 = false
+      }
+    }
+    if (verticalCheck3 == true) {
+      for (x in verticalTileList3) {
+        var button = document.getElementById(verticalTileList3[x])
+        button.style.backgroundColor = "green"
+      }
+    }
+
+    var verticalTileList4 = [4, 9, 14, 19, 24]
+    var verticalCheck4 = true
+    for (x in verticalTileList4) {
+      var button = document.getElementById(verticalTileList4[x])
+      if ((button.style.backgroundColor != "lightgreen") && (button.style.backgroundColor != "green")) {
+        verticalCheck4 = false
+      }
+    }
+    if (verticalCheck4 == true) {
+      for (x in verticalTileList4) {
+        var button = document.getElementById(verticalTileList4[x])
+        button.style.backgroundColor = "green"
+      }
+    }
+
+    var verticalTileList5 = [5, 10, 15, 20, 25]
+    var verticalCheck5 = true
+    for (x in verticalTileList5) {
+      var button = document.getElementById(verticalTileList5[x])
+      if ((button.style.backgroundColor != "lightgreen") && (button.style.backgroundColor != "green")) {
+        verticalCheck5 = false
+      }
+    }
+    if (verticalCheck5 == true) {
+      for (x in verticalTileList5) {
+        var button = document.getElementById(verticalTileList5[x])
+        button.style.backgroundColor = "green"
+      }
+    }
+
+  }
+
 </script>
