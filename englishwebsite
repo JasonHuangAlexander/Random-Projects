@@ -208,7 +208,7 @@
       	console.log("YOU WIN")
 			}
       
-      var horizontalTileList3= [11,12,13,14,15]
+      var horizontalTileList3= [11,12,14,15]
       var horizontalCheck3 = true
       for (x in horizontalTileList3){
       	var button = document.getElementById(horizontalTileList3[x])
@@ -243,6 +243,68 @@
       if (horizontalCheck5==true){
       	console.log("YOU WIN")
 			}
+      
+      //vertical checks
+      var verticalTileList1 = [1,6,11,16,21]
+      var verticalCheck1 = true
+      for (x in verticalTileList1){
+      	var button = document.getElementById(verticalTileList1[x])
+        if (button.style.backgroundColor!="lightgreen"){
+        	verticalCheck1 = false
+        }
+      }
+      if (verticalCheck1==true){
+      	console.log("YOU WIN")
+      }
+      
+      var verticalTileList2 = [2,7,12,17,22]
+      var verticalCheck2 = true
+      for (x in verticalTileList2){
+      	var button = document.getElementById(verticalTileList2[x])
+        if (button.style.backgroundColor!="lightgreen"){
+        	verticalCheck2 = false
+        }
+      }
+      if (verticalCheck2==true){
+      	console.log("YOU WIN")
+      }
+      
+      var verticalTileList3 = [3,8,18,23]
+      var verticalCheck3 = true
+      for (x in verticalTileList3){
+      	var button = document.getElementById(verticalTileList3[x])
+        if (button.style.backgroundColor!="lightgreen"){
+        	verticalCheck3 = false
+        }
+      }
+      if (verticalCheck3==true){
+      	console.log("YOU WIN")
+      }
+      
+      var verticalTileList4 = [4,9,14,19,24]
+      var verticalCheck4 = true
+      for (x in verticalTileList4){
+      	var button = document.getElementById(verticalTileList4[x])
+        if (button.style.backgroundColor!="lightgreen"){
+        	verticalCheck4  = false
+        }
+      }
+      if (verticalCheck4==true){
+      	console.log("YOU WIN")
+      }
+      
+      var verticalTileList5 = [5,10,15,20,25]
+      var verticalCheck5 = true
+      for (x in verticalTileList5){
+      	var button = document.getElementById(verticalTileList5[x])
+        if (button.style.backgroundColor!="lightgreen"){
+        	verticalCheck5 = false
+        }
+      }
+      if (verticalCheck5==true){
+      	console.log("YOU WIN")
+      }
+   
     }
    
     
