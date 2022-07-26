@@ -4,9 +4,9 @@
 
     //POTENTIAL ADDITIONS:
     //Add an option to show what questions you got wrong, and then study them
-    //make it so that you cannot get repeat questions in a practice
+   
     
-
+		var incorrectList = []
 		function makeTile(){
     	totalTileCount++
       var columnTile = document.createElement("td")
@@ -17,8 +17,9 @@
       button.style.height="100px"
       button.textContent=button.id
       if (button.id==13){
-      	button.textContent = "Free"
+      	button.textContent=(incorrectList.length + " corrections")
         button.style.backgroundColor="lightyellow"
+        button.style.fontSize = "12px"
       }
       else{
       	button.textContent = ("Practice " + button.id) //sets button text content, uses button ID
@@ -26,30 +27,27 @@
       }
       columnTile.append(button)
       button.onclick=function(){ //ONCLICK
-        if (button.getAttribute("exerciseScore") < 8) {
-          button.setAttribute("exerciseScore",0)
-          
-          for (var x = 1;x<=25;x++){ //select which practice to do
-          	if ((button.id==x)&&(button.id!=13)){
-            	exercise(x)
-            }
-          }
-    
-          if (button.getAttribute("exerciseScore") >= 8) {
-          	button.style.backgroundColor = "lightgreen"
-            checkbingo(button.id) //check rows for bingo FUNCTION CALL
-          }
-          else {
-            button.style.backgroundColor = "pink"
-          }
-          button.textContent = (button.getAttribute("exerciseScore") + "/10")
-          if(button.id==13){
-          	button.textContent="Free"
-            button.style.backgroundColor="lightyellow"
-          }
-    }
+      	if(button.id!=13){
+        	if (button.getAttribute("exerciseScore") < 8) {
+          	button.setAttribute("exerciseScore",0)
+          	for (var x = 1;x<=25;x++){ //select which practice to do
+          		if ((button.id==x)&&(button.id!=13)){
+            		exercise(x)
+            	}
+          	}
+         		if (button.getAttribute("exerciseScore") >= 8) {
+          		button.style.backgroundColor = "lightgreen"
+            	checkbingo(button.id) //check rows for bingo FUNCTION CALL
+          	}
+          	else {
+            	button.style.backgroundColor = "pink"
+          	}
+          	button.textContent = (button.getAttribute("exerciseScore") + "/10")
+    			}
         console.log(button.textContent) //Currently logs TEXT CONTENT of button, NOT ID
-      }
+      	}
+        }
+         
     }
 		var totalRowCount = 0
 		var totalTileCount = 0
@@ -135,8 +133,8 @@
         	var questionAnswerList = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"],]
         }  
         for (var x = 0; x < 10; x++) {
-            var randomNumber = Math.floor(Math.random() * 10)
-            var answer = prompt(questionAnswerList[randomNumber][0])
+            //var randomNumber = Math.floor(Math.random() * 10)
+            var answer = prompt(questionAnswerList[x][0])
             if (answer == "quit") {
                 break
             }
@@ -144,13 +142,15 @@
             		var button = document.getElementById(buttonId)
                 button.setAttribute("exerciseScore",10)
             }
-            if (answer == questionAnswerList[randomNumber][1]) {
-            		var button = document.getElementById(buttonId)
-                //var x = button.getAttribute("exerciseScore")
-                //x++
-                //button.setAttribute("exerciseScore",x)
-                
+            if (answer == questionAnswerList[x][1]) {
+            		var button = document.getElementById(buttonId)               
                 button.setAttribute("exerciseScore",(parseInt(button.getAttribute("exerciseScore"))+1))
+            }
+            else{
+            	incorrectList.push(questionAnswerList[x][0])
+              var midTile = document.getElementById(13)
+              midTile.textContent = (incorrectList.length +" corrections")
+              midTile.style.backgroundColor = "lightyellow"
             }
         }
     }
@@ -162,7 +162,7 @@
       var diagonalCheck1 = true
       for (x in diagonalTileList1){
       	var button = document.getElementById(diagonalTileList1[x])
-      	if (button.style.backgroundColor!="lightgreen"){
+      	if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
         	diagonalCheck1 = false
         }
       }
@@ -177,7 +177,7 @@
       var diagonalCheck2 = true
       for (x in diagonalTileList2){
       	var button = document.getElementById(diagonalTileList2[x])
-      	if (button.style.backgroundColor!="lightgreen"){
+      	if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
         	diagonalCheck2 = false
         }
       }
@@ -193,7 +193,7 @@
       var horizontalCheck1 = true
       for (x in horizontalTileList1){
       	var button = document.getElementById(horizontalTileList1[x])
-        if (button.style.backgroundColor!="lightgreen"){
+        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
         	horizontalCheck1 = false
         }
       }
@@ -208,7 +208,7 @@
       var horizontalCheck2 = true
       for (x in horizontalTileList2){
       	var button = document.getElementById(horizontalTileList2[x])
-        if (button.style.backgroundColor!="lightgreen"){
+        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
         	horizontalCheck2 = false
         }
       }
@@ -223,7 +223,7 @@
       var horizontalCheck3 = true
       for (x in horizontalTileList3){
       	var button = document.getElementById(horizontalTileList3[x])
-        if (button.style.backgroundColor!="lightgreen"){
+        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
         	horizontalCheck3 = false
         }
       }
@@ -238,7 +238,7 @@
       var horizontalCheck4 = true
       for (x in horizontalTileList4){
       	var button = document.getElementById(horizontalTileList4[x])
-        if (button.style.backgroundColor!="lightgreen"){
+        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
         	horizontalCheck4 = false
         }
       }
@@ -253,7 +253,7 @@
       var horizontalCheck5 = true
       for (x in horizontalTileList5){
       	var button = document.getElementById(horizontalTileList5[x])
-        if (button.style.backgroundColor!="lightgreen"){
+       	if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
         	horizontalCheck5 = false
         }
       }
@@ -269,7 +269,7 @@
       var verticalCheck1 = true
       for (x in verticalTileList1){
       	var button = document.getElementById(verticalTileList1[x])
-        if (button.style.backgroundColor!="lightgreen"){
+        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
         	verticalCheck1 = false
         }
       }
@@ -284,7 +284,7 @@
       var verticalCheck2 = true
       for (x in verticalTileList2){
       	var button = document.getElementById(verticalTileList2[x])
-        if (button.style.backgroundColor!="lightgreen"){
+        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
         	verticalCheck2 = false
         }
       }
@@ -299,7 +299,7 @@
       var verticalCheck3 = true
       for (x in verticalTileList3){
       	var button = document.getElementById(verticalTileList3[x])
-        if (button.style.backgroundColor!="lightgreen"){
+        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
         	verticalCheck3 = false
         }
       }
@@ -314,7 +314,7 @@
       var verticalCheck4 = true
       for (x in verticalTileList4){
       	var button = document.getElementById(verticalTileList4[x])
-        if (button.style.backgroundColor!="lightgreen"){
+        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
         	verticalCheck4  = false
         }
       }
@@ -329,7 +329,7 @@
       var verticalCheck5 = true
       for (x in verticalTileList5){
       	var button = document.getElementById(verticalTileList5[x])
-        if (button.style.backgroundColor!="lightgreen"){
+        if ((button.style.backgroundColor!="lightgreen")&&(button.style.backgroundColor!="green")){
         	verticalCheck5 = false
         }
       }
