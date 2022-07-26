@@ -43,17 +43,18 @@
           button.textContent = (button.getAttribute("exerciseScore") + "/10")
         }
         console.log(button.textContent) //Currently logs TEXT CONTENT of button, NOT ID
-      }
-      else (if button.id==13){
-      	var updatedIncorrectList = []
-      	for (x in incorrectList){
-        	var question = prompt(incorrectList[x][0])
-          if (question!=incorrectList[x][1])
-          updatedIncorrectList.push(incorrectList[x])
+      } else if (button.id == 13) {
+        var updatedIncorrectList = []
+        for (x in incorrectList) {
+          var question = prompt(incorrectList[x][0])
+          if (question != incorrectList[x][1]) {
+            updatedIncorrectList.push(incorrectList[x])
+          }
         }
-        button.textcontent = (incorrectList.length + " corrections")
-        if (incorrectList.length==0){
-        	button.style.backgroundColor = "white"
+        incorrectList = updatedIncorrectList
+        button.textContent = (incorrectList.length + " corrections")
+        if (incorrectList.length == 0) {
+          button.style.backgroundColor = "white"
         }
       }
     }
@@ -410,18 +411,11 @@
     for (var x = 0; x < 10; x++) {
       //var randomNumber = Math.floor(Math.random() * 10)
       var answer = prompt(questionAnswerList[x][0])
-      if (answer == "quit") {
-        break
-      }
-      if (answer == "givepoint") {
-        var button = document.getElementById(buttonId)
-        button.setAttribute("exerciseScore", 10)
-      }
       if (answer == questionAnswerList[x][1]) {
         var button = document.getElementById(buttonId)
         button.setAttribute("exerciseScore", (parseInt(button.getAttribute("exerciseScore")) + 1))
       } else {
-        incorrectList.push(questionAnswerList[x][0])
+        incorrectList.push(questionAnswerList[x])
         var midTile = document.getElementById(13)
         midTile.textContent = (incorrectList.length + " corrections")
         midTile.style.backgroundColor = "lightyellow"
