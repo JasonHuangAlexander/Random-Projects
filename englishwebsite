@@ -1,10 +1,6 @@
 <div1 id="div1"></div1>
 
 <script>
-  //POTENTIAL ADDITIONS:
-  //Add an option to show what questions you got wrong, and then study them
-
-
   var incorrectList = []
 
   function makeTile() {
@@ -74,16 +70,16 @@
   function exercise(buttonId) { //exercize 1 function
     if (buttonId == 1) {
       var questionAnswerList = [
-        ["My favorite recipes involve chocolate ___________ for instance, I love chocolate chip cookies, chocolate sauce, and chocolate cake.\n\n\nA: :\n\nB: ;\n\nC: '", "B"],
-        ["3*3", "9"],
-        ["2-2", "0"],
-        ["10-1", "9"],
-        ["2+3", "5"],
-        ["3+3", "6"],
-        ["10-3", "7"],
-        ["16/2", "8"],
-        ["1+8", "9"],
-        ["100/10", "10"],
+        ["My favorite recipes involve chocolate__ for instance, I love chocolate chip cookies, chocolate sauce, and chocolate cake.\n\n\nA) No change\n\nB) chocolate:\n\nC) chocolate;\n\nD) chocolate'", "C"],
+        ["Take Barlett pears__ for instance__ unless they are treated at the right time, they will remain green.\n\n\nA) No change\n\nB) pears, for instance:\n\nC) pears for instance,\n\nD) pears. For instance,", "B"],
+        ["I couldnt wait to view painter__ Georges Seurat's__ 10-foot-wide painting.\n\n\nA) No change\n\nB) painter, Georges Seurat's\n\nC) painter Georges Seurat's,\n\nD) painter, Georges Seurat's,", "A"],
+        ["Today's researchers have found that the army of trained volunteers can sometimes be replaced by another army__ the vast array of individuals volunteering details about their lives.\n\n\nA) No change\n\nB) replaced--by another army,\n\nC) replaced by another army;\n\nD) replaced by another army:", "D"],
+        ["The image of dogs playing poker--popularized in a series of paintings by American artist C. M. Coolidge__ may be the first and only one that comes to find.\n\n\nA) No change\n\nB) Coolidge--\n\nC) Coolidge;\n\nD) Coolidge:", "B"],
+        ["Studies show that children__ who are physically active may perform better in the classroom.\n\n\nA) No change\n\nB) children,\n\nC) children:\n\nD) children;", "A"],
+        ["Last week, Theodore--who is an extremely conscientious student__ won a $10,000 scholarship; his parents are incredibly proud.\n\n\nA) No change\n\nB) student--won\n\nC) student, won\n\nD) student: won", "B"],
+        ["Julie was thoroughly confused__ she couldn't figure out where she put her car keys\n\nA) No change\n\nB) cofused, she\n\nC) confused she,\n\nD) confused: she", "D"],
+        ["Paul was overcome with joy when he saw actor__ Keanu Reeves__ in the parking lot of a McDonald's restaurant.\n\n\nA) No change\n\nB) actor, Keanu Reeves\n\nC) actor, Keanu Reeves,\n\nD) actor: Keanu Reeves", "A"],
+        ["I hurried home from school to find Max, my dog that I've had__ for five years__ chewing on my favorite pair of shoes.\n\n\nA) No change\n\nB) had, for five years chewing\n\nC) had for five years, chewing\n\nD) had, for five years, chewing", "C"],
       ]
     }
     if (buttonId == 2) {
