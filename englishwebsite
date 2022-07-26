@@ -2,9 +2,6 @@
 
 <script>
 
-		//BUGS:
-    //getting a full score will still dispaly a 9/10 score
-    
     //POTENTIAL ADDITIONS:
     //Add an option to show what questions you got wrong, and then study them
     //make it so that you cannot get repeat questions in a practice
@@ -149,9 +146,11 @@
             }
             if (answer == questionAnswerList[randomNumber][1]) {
             		var button = document.getElementById(buttonId)
-                var x = button.getAttribute("exerciseScore")
-                x++
-                button.setAttribute("exerciseScore",x)
+                //var x = button.getAttribute("exerciseScore")
+                //x++
+                //button.setAttribute("exerciseScore",x)
+                
+                button.setAttribute("exerciseScore",(parseInt(button.getAttribute("exerciseScore"))+1))
             }
         }
     }
@@ -168,7 +167,10 @@
         }
       }
       if (diagonalCheck1 == true){
-      	console.log("YOU WIN") 
+      	for (x in diagonalTileList1){
+        	var button = document.getElementById(diagonalTileList1[x])
+          button.style.backgroundColor="green"
+        }
       }
       
       var diagonalTileList2 = [5,9,17,21]
@@ -180,7 +182,10 @@
         }
       }
       if (diagonalCheck2 == true){
-      	console.log("YOU WIN") 
+      	for (x in diagonalTileList2){
+        	var button = document.getElementById(diagonalTileList2[x])
+          button.style.backgroundColor="green"
+        }
       }
       
       //horizontal checks
@@ -193,7 +198,10 @@
         }
       }
       if (horizontalCheck1==true){
-      	console.log("YOU WIN")
+      	for (x in horizontalTileList1){
+        	var button = document.getElementById(horizontalTileList1[x])
+          button.style.backgroundColor="green"
+        }
 			}
       
       var horizontalTileList2 = [6,7,8,9,10]
@@ -205,7 +213,10 @@
         }
       }
       if (horizontalCheck2==true){
-      	console.log("YOU WIN")
+      	for (x in horizontalTileList2){
+        	var button = document.getElementById(horizontalTileList2[x])
+          button.style.backgroundColor="green"
+        }
 			}
       
       var horizontalTileList3= [11,12,14,15]
@@ -217,7 +228,10 @@
         }
       }
       if (horizontalCheck3==true){
-      	console.log("YOU WIN")
+      	for (x in horizontalTileList3){
+        	var button = document.getElementById(horizontalTileList3[x])
+          button.style.backgroundColor="green"
+        }
 			}
       
       var horizontalTileList4 = [16,17,18,19,20]
@@ -229,7 +243,10 @@
         }
       }
       if (horizontalCheck4==true){
-      	console.log("YOU WIN")
+      	for (x in horizontalTileList4){
+        	var button = document.getElementById(horizontalTileList4[x])
+          button.style.backgroundColor="green"
+        }
 			}
       
       var horizontalTileList5 = [21,22,23,24,25]
@@ -241,7 +258,10 @@
         }
       }
       if (horizontalCheck5==true){
-      	console.log("YOU WIN")
+      	for (x in horizontalTileList5){
+        	var button = document.getElementById(horizontalTileList5[x])
+          button.style.backgroundColor="green"
+        }
 			}
       
       //vertical checks
@@ -254,7 +274,10 @@
         }
       }
       if (verticalCheck1==true){
-      	console.log("YOU WIN")
+      	for (x in verticalTileList1){
+        	var button = document.getElementById(verticalTileList1[x])
+          button.style.backgroundColor="green"
+        }
       }
       
       var verticalTileList2 = [2,7,12,17,22]
@@ -266,7 +289,10 @@
         }
       }
       if (verticalCheck2==true){
-      	console.log("YOU WIN")
+      	for (x in verticalTileList2){
+        	var button = document.getElementById(verticalTileList2[x])
+          button.style.backgroundColor="green"
+        }
       }
       
       var verticalTileList3 = [3,8,18,23]
@@ -278,7 +304,10 @@
         }
       }
       if (verticalCheck3==true){
-      	console.log("YOU WIN")
+      	for (x in verticalTileList3){
+        	var button = document.getElementById(verticalTileList3[x])
+          button.style.backgroundColor="green"
+        }
       }
       
       var verticalTileList4 = [4,9,14,19,24]
@@ -290,7 +319,10 @@
         }
       }
       if (verticalCheck4==true){
-      	console.log("YOU WIN")
+      	for (x in verticalTileList4){
+        	var button = document.getElementById(verticalTileList4[x])
+          button.style.backgroundColor="green"
+        }
       }
       
       var verticalTileList5 = [5,10,15,20,25]
@@ -302,7 +334,10 @@
         }
       }
       if (verticalCheck5==true){
-      	console.log("YOU WIN")
+      	for (x in verticalTileList5){
+        	var button = document.getElementById(verticalTileList5[x])
+          button.style.backgroundColor="green"
+        }
       }
    
     }
