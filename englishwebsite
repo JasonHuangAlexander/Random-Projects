@@ -84,16 +84,16 @@
     }
     if (buttonId == 2) {
       var questionAnswerList = [
-        ["1", "1"],
-        ["2", "2"],
-        ["3", "3"],
-        ["4", "4"],
-        ["5", "5"],
-        ["6", "6"],
-        ["7", "7"],
-        ["8", "8"],
-        ["9", "9"],
-        ["10", "10"],
+        ["Either the teacher or the students sitting in the front row __ from the board.\n\n\nA) reads\n\nB) read", "A"],
+        ["The athlete was noted for his athletic skill, his good business, and __\n\n\nA) being both sincere and humble.\n\nB) , and his sincere humility.\n\nC) being both sincere and humble", "B"],
+        ["Examining the model, the researchers determined that __ had found a new species, a 75-million year old crocodile.\n\n\nA) one\n\nB) he or she\n\nC) they", "C"],
+        ["This group of individuals was so powerful and __ 'There is nothing which is beyond their reach'\n\n\nA) corrupt that the NY times commented,\n\nB) corrupt, that the NY times commented,\n\nC) corrupt that the NY times commented", "A"],
+        ["One of the artist's most (famous) images showed a young child holding a sack of flour.\n\n\nA) No change\n\nB) famous and well known\n\nC) famous and commonly known\n\nD) famous, commonly known", "A"],
+        ["At (it's) best, the system can give creators direct access to millions of potential backers,\n\n\nA) No change\n\nB) its\n\nC) its'\n\nD) their", "B"],
+        ["It is not difficult to understand why a cash-strapped, understaffed publication might feel pressure to cut teams of investigative reporter's__ their work is expensive and time-consuming.\n\n\nA) reporter's\n\nB) reporters,\n\nC) reporter's:\n\nD) reporters:", "D"],
+        ["Since William the Conquerer in 1066, every British sovereign has been crowned in Westminster Abbey except Edward V and Edward VIII, __ crowned.\n\n\nA) neither of them were\n\n B) neither of whom was\n\nC) neither of whom were\n\nD) with neither being", "B"],
+        ["Reading maps (involve) several different abilities, including the ability to locate places, to ascertain directions, to measure distances, and to interpret the mapmaker's symbols.\n\n\nA) No change\n\nB) will involve\n\nC) have involved\n\nD) involves", "D"],
+        ["When light from a different source, __ a collection of water drops, such as rain, spray, or fog, a rainbow may appear.\n\n\nA) such as the sun, it strikes\n\nB) like the sun's, striking\n\nC) such as the sun, strikes\n\nD) such as the sun, and striking", "C"],
       ]
     }
     if (buttonId == 3) {
