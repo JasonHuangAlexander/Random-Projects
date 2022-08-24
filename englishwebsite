@@ -98,16 +98,16 @@
     }
     if (buttonId == 3) {
       var questionAnswerList = [
-        ["1", "1"],
-        ["2", "2"],
-        ["3", "3"],
-        ["4", "4"],
-        ["5", "5"],
-        ["6", "6"],
-        ["7", "7"],
-        ["8", "8"],
-        ["9", "9"],
-        ["10", "10"],
+        ["One can only have the audacity of hope and believe that some can be led to the habit of unmasking ideological ___ those that surround us on all sides in the U.S. today.\n\n\nA) aberrations such as\n\nB) aberrations: such as\n\nC) aberrations, such as", "A"],
+        ["After reading about Fortune ___ I decided to go and study this geologic treasure myself.\n\n\nA) Head\n\nB) Head;\n\nC) Head,\n\nD) Head, then", "C"],
+        ["___ meat, eggs, and dairy products became the large food items composing the main and side dishes in Japanese kitchens.\n\n\nA) After World War II polished rice,\n\nB) After, World War II polished rice,\n\nC) After World War II, polished rice,", "C"],
+        ["The ___ the period preceding the Cambrian, was an era of soft-bodied and frond-like creatures.\n\n\nA) Ediacaran, this is\n\nB) Ediacaran: \n\nC) Eiacaran,\n\nD) Ediacaran and", "C"],
+        ["Hopkins had no idea what was causing the phenomenon, but he grew fascinated by the daily atmospheric displays, tracking ___ changing appearances over the course of that winter.\n\n\nA) its\n\nB) his\n\nC) their\n\nD) there", "C"],
+        ["The British lacked the capacity to enter the continent and intervine in __ affairs\n\n\nA) its\n\nB) it's\n\nC) their\n\nD) there", "A"],
+        ["We spend a lot of time talking to business leaders ___ invest in their workforce\n\n\nA) that\n\nB) which\n\nC) who\n\nD) whom", "C"],
+        ["When they were alive, these small, soft-bodied animals ___ through the ocean strata while eating the sediment that collected there.\n\n\nA) burrow\n\nB) burrowed\n\nC) can burrow\n\nD) have burrowed", "B"],
+        ["But ____ many difficulties in turning attention into action over a long period of time\n\n\nA) their are\n\nB) there are\n\nC) there is\n\nD) their is", "B"],
+        ["The expedition consisted of ____ 69 Royal African Corps troops, 32 African civilians, 200 pack animals, several field cannons, various other weapons, plentiful gifts for local royals, and the standard necessities for such a force.\n\n\nA) a small military force,\n\nB) food for several months\n\nC) horses and camels to carry supplies, D) DELETE the underlined portion", "D"],
       ]
     }
     if (buttonId == 4) {
