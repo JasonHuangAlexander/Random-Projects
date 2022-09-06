@@ -112,10 +112,10 @@
     }
     if (buttonId == 4) {
       var questionAnswerList = [
-        ["1", "1"],
-        ["2", "2"],
-        ["3", "3"],
-        ["4", "4"],
+        ["But Justin Box _____ believes that another factor added to the early thaw.\n\n\nA) Justin Box, an associate professor of geology at Ohio State\n\nB) Justin Box an associate professor of geology at Ohio State,\n\nC) Justin Box, an associate professor of geology at Ohio State,\n\nD) Justin Box, an associate professor of geology, at Ohio State", "C"],
+        ["Because consumers reap the nutritional benefits of Greek yogurt and support those who make and sell it ______ businesses should continue finding safe and effective methods of producing the food.\n\n\nA) sell it, therefore farmers\n\nB) sell it, farmers\n\nC) sell it, so farmers\n\nD) sell it: farmers", "B"],
+        ["Other publishers quickly follow suit. In the years that followed ____ talented writers and illustrators came forward\n\n\nA) followed. Many\n\nB) followed; many\n\n\nC) followed, many\n\nD) followed--many", "C"],
+        ["Ohio State believes that another factor added to the early thaw ____ the 'dark snow' problem.\n\n\nA) NO CHANGE\n\nB) thaw; and it was\n\nC) thaw:\n\nD) thaw: being", "C"],
         ["5", "5"],
         ["6", "6"],
         ["7", "7"],
